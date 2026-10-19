@@ -377,6 +377,7 @@ for (const b of bellCronList) {
 // --- EXPRESS HTTP SERVER (WEB CONTROLLER & HEALTH CHECK) ---
 const app = express();
 const PORT = process.env.PORT || 3000;
+const IP = process.env.IP || '0.0.0.0';
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -557,8 +558,8 @@ app.post('/api/trigger', async (req, res) => {
 });
 
 // Jalankan Web Server & Bot
-app.listen(PORT, () => {
-  addLog(`Web Dashboard Controller berjalan di: http://localhost:${PORT}`);
+app.listen(PORT, IP, () => {
+  addLog(`Web Dashboard Controller berjalan di: http://${IP}:${PORT}`);
   startBot();
 
   // Auto Keep-Alive Self-Ping (Mencegah server sleep di Render / cloud gratis)
