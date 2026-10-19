@@ -560,4 +560,14 @@ app.post('/api/trigger', async (req, res) => {
 app.listen(PORT, () => {
   addLog(`Web Dashboard Controller berjalan di: http://localhost:${PORT}`);
   startBot();
+
+  // Auto Keep-Alive Self-Ping (Mencegah server sleep di Render / cloud gratis)
+  const appUrl = process.env.RENDER_EXTERNAL_URL || process.env.APP_URL;
+  if (appUrl) {
+    setInterval(async () => {
+      try {
+        await fetch(`${appUrl}/api/status`);
+      } catch (e) {}
+    }, 10 * 60 * 1000);
+  }
 });
