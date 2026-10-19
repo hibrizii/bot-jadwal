@@ -215,20 +215,7 @@ function buildJamMessage(targetJam, jadwalData, kontakMap) {
     }
   }
 
-  // Tambahkan info piket jam tersebut
-  const sesi = ([1, 2].includes(targetJam)) ? '1' : (([3, 4].includes(targetJam)) ? '2' : (([5, 6].includes(targetJam)) ? '3' : '4'));
-  const piketInfo = daySched.piket ? daySched.piket[sesi] : null;
-  if (piketInfo) {
-    if (piketInfo.lt1 && piketInfo.lt1 !== '-') {
-      const gPiket1 = formatGuruMention((piketInfo.lt1 || '').split('/'), kontakMap, mentions);
-      text += `📋 Piket Lt. 1 : ${gPiket1}\n`;
-    }
-    if (piketInfo.lt4 && piketInfo.lt4 !== '-') {
-      const gPiket4 = formatGuruMention((piketInfo.lt4 || '').split('/'), kontakMap, mentions);
-      text += `📋 Piket Lt. 4 : ${gPiket4}\n`;
-    }
-  }
-
+  text = text.trim();
   return { text, mentions };
 }
 
