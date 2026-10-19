@@ -435,6 +435,53 @@
       </div>
     </header>
 
+    <!-- WHATSAPP CONNECTION BANNER (QR & PAIRING CODE) -->
+    <div id="waConnectBanner" style="display: none; background: #ffffff; border: 2px solid #3b82f6; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 14px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">📱</span>
+          <strong style="color: #1e293b; font-size: 1rem;">Hubungkan WhatsApp Bot</strong>
+        </div>
+        <span id="waBannerBadge" style="font-size: 0.75rem; background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 9999px; font-weight: 700;">Menunggu Terhubung</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: start;">
+        
+        <!-- CARA 1: SCAN QR CODE -->
+        <div style="text-align: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
+          <h4 style="margin: 0 0 4px 0; font-size: 0.88rem; color: #334155;">Cara 1: Scan QR Code</h4>
+          <p style="font-size: 0.74rem; color: #64748b; margin-bottom: 10px;">Buka WhatsApp di HP lain &rarr; Perangkat Tertaut &rarr; Scan QR</p>
+          <div id="qrLoading" style="color: #64748b; font-size: 0.8rem; padding: 30px 0;">⏳ Menyiapkan QR Code...</div>
+          <img id="qrImage" src="" alt="WhatsApp QR Code" style="display: none; width: 200px; height: 200px; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; padding: 6px;">
+        </div>
+
+        <!-- CARA 2: KODE PAIRING (SANGAT PRAKTIS DI HP) -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px;">
+          <h4 style="margin: 0 0 4px 0; font-size: 0.88rem; color: #166534;">Cara 2: Pakai Nomor HP (Tanpa Kamera)</h4>
+          <p style="font-size: 0.74rem; color: #15803d; margin-bottom: 10px;">Paling mudah jika bot & WhatsApp ada di HP yang sama!</p>
+          
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-size: 0.72rem; font-weight: 700; color: #166534;">Nomor WhatsApp Anda:</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="tel" id="inputPairingPhone" placeholder="Contoh: 081234567890" style="flex: 1; padding: 8px 10px; border: 1px solid #86efac; border-radius: 6px; font-size: 0.85rem; font-weight: 600; outline: none; background: #fff;">
+              <button class="btn-nav" style="background: #16a34a; color: white; padding: 8px 12px; font-size: 0.8rem; white-space: nowrap;" onclick="requestPairingCode()">
+                🔑 Minta Kode
+              </button>
+            </div>
+          </div>
+
+          <div id="pairingCodeBox" style="display: none; margin-top: 10px; background: #fff; border: 2px dashed #16a34a; border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="font-size: 0.72rem; color: #64748b;">Kode Sambung WhatsApp Anda:</div>
+            <div id="pairingCodeDisplay" style="font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; color: #15803d; margin: 4px 0; font-family: monospace;">----</div>
+            <div style="font-size: 0.72rem; color: #475569; line-height: 1.3;">
+              Buka WhatsApp &rarr; <strong>Perangkat Tertaut</strong> &rarr; <strong>Tautkan Perangkat</strong> &rarr; Pilih <strong>"Tautkan dengan nomor telepon saja"</strong> &rarr; Ketik kode di atas.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- NAVIGATION BAR -->
     <div class="nav-card" id="home-controls">
       <div class="nav-group">
@@ -948,12 +995,28 @@
         const data = await res.json();
 
         const badge = document.getElementById('waBadge');
+        const banner = document.getElementById('waConnectBanner');
+        const qrImg = document.getElementById('qrImage');
+        const qrLoad = document.getElementById('qrLoading');
+
         if (data.connected) {
           badge.className = 'pill pill-wa-on';
           badge.innerHTML = `<span>🟢 WhatsApp Aktif (${data.user || 'Terhubung'})</span>`;
+          if (banner) banner.style.display = 'none';
         } else {
           badge.className = 'pill pill-wa-wait';
-          badge.innerHTML = `<span>🟡 Menunggu Scan WA</span>`;
+          badge.innerHTML = `<span>🟡 Menunggu Sambung WA</span>`;
+          if (banner) {
+            banner.style.display = 'block';
+            if (data.qr) {
+              qrImg.src = data.qr;
+              qrImg.style.display = 'block';
+              qrLoad.style.display = 'none';
+            } else {
+              qrImg.style.display = 'none';
+              qrLoad.style.display = 'block';
+            }
+          }
         }
 
         botConfig = data.config || {};
@@ -1185,6 +1248,29 @@
         loadStatus();
       } catch (e) {
         showToast('Error trigger piket', true);
+      }
+    }
+
+    async function requestPairingCode() {
+      const phoneInput = document.getElementById('inputPairingPhone');
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      if (!phone) {
+        alert('Masukkan nomor WhatsApp Anda terlebih dahulu (contoh: 081234567890)');
+        return;
+      }
+      showToast('Meminta kode sambung dari WhatsApp...');
+      try {
+        const res = await fetch(`/api/pairing-code?phone=${encodeURIComponent(phone)}`);
+        const data = await res.json();
+        if (data.success && data.code) {
+          document.getElementById('pairingCodeBox').style.display = 'block';
+          document.getElementById('pairingCodeDisplay').innerText = data.code;
+          showToast('Kode berhasil dibuat! Masukkan kode ini di WhatsApp Anda. ✔️');
+        } else {
+          alert('Gagal: ' + (data.error || 'Coba beberapa saat lagi'));
+        }
+      } catch (e) {
+        alert('Gagal menghubungi server bot.');
       }
     }
 

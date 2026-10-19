@@ -394,6 +394,32 @@ app.get('/api/status', (req, res) => {
   });
 });
 
+// API Pairing Code (Sambung nomor WA tanpa scan kamera di HP)
+app.get('/api/pairing-code', async (req, res) => {
+  let phone = (req.query.phone || '').replace(/[^0-9]/g, '');
+  if (phone.startsWith('08')) phone = '62' + phone.substring(1);
+  else if (phone.startsWith('8')) phone = '62' + phone;
+
+  if (!phone || phone.length < 10) {
+    return res.status(400).json({ success: false, error: 'Nomor telepon tidak valid. Gunakan format 08xxx atau 628xxx' });
+  }
+  if (isConnected) {
+    return res.status(400).json({ success: false, error: 'WhatsApp sudah terhubung!' });
+  }
+  if (!sock) {
+    return res.status(500).json({ success: false, error: 'Bot belum siap, silakan tunggu beberapa detik...' });
+  }
+
+  try {
+    const code = await sock.requestPairingCode(phone);
+    addLog(`[PAIRING] Kode pairing diminta untuk ${phone}: ${code}`);
+    res.json({ success: true, code });
+  } catch (err) {
+    addLog(`[ERROR] Gagal request pairing code: ${err.message}`);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // API Jadwal Hari Ini (Format Lengkap Kelas & Guru)
 app.get('/api/jadwal/today', (req, res) => {
   const { name: dayName, date } = getJakartaDay();
