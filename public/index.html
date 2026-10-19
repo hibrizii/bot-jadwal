@@ -489,9 +489,20 @@
         <button class="btn-nav btn-now" id="btn-now" onclick="resetJam()" style="display:none;">Sekarang</button>
         <button class="btn-nav" id="btn-next" onclick="changeJam(1)">Next &#8594;</button>
       </div>
-      <select id="teacher-selector" class="input-select" onchange="switchToTeacherMode(this.value)">
-        <option value="">🔍 Cari Jadwal Ustadz...</option>
-      </select>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; flex: 1; justify-content: flex-end;">
+        <select id="day-selector" class="input-select" onchange="onDayChange(this.value)" style="min-width: 175px;">
+          <option value="today">📅 Hari Ini (Otomatis)</option>
+          <option value="Monday">Senin</option>
+          <option value="Tuesday">Selasa</option>
+          <option value="Wednesday">Rabu</option>
+          <option value="Thursday">Kamis</option>
+          <option value="Friday">Jumat</option>
+          <option value="Saturday">Sabtu</option>
+        </select>
+        <select id="teacher-selector" class="input-select" onchange="switchToTeacherMode(this.value)" style="min-width: 200px;">
+          <option value="">🔍 Cari Jadwal Ustadz...</option>
+        </select>
+      </div>
     </div>
 
     <!-- MAIN TWO COLUMN GRID -->
@@ -693,7 +704,11 @@
 
   <script>
     var globalData = [];
-    var currentDayStr = "";
+    var currentDayEng = "";
+    var currentDayIndo = "";
+    var currentFullDateIndo = "";
+    var isViewingToday = true;
+    var selectedDayParam = "today";
     var dataLoaded = false;
     var manualJam = 0;
     var activeTeacher = "";
@@ -794,7 +809,17 @@
       }
     };
 
-    window.resetJam = function() { manualJam = 0; updateUI(); };
+    window.resetJam = function() {
+      manualJam = 0;
+      if (!isViewingToday) {
+        selectedDayParam = "today";
+        const daySel = document.getElementById('day-selector');
+        if (daySel) daySel.value = "today";
+        loadTodayJadwal("today");
+      } else {
+        updateUI();
+      }
+    };
     window.switchToTeacherMode = function(tName) {
       activeTeacher = tName;
       document.getElementById('teacher-selector').value = tName;
@@ -831,9 +856,11 @@
       document.getElementById('grid-view').style.display = isTeacherMode ? 'none' : 'block';
       document.getElementById('teacher-view').style.display = isTeacherMode ? 'block' : 'none';
 
+      var dayHeaderLabel = isViewingToday ? currentFullDateIndo : `${currentDayIndo} (Tinjau)`;
+
       if (isTeacherMode) {
-        document.getElementById('status-info').innerText = currentDayStr + " | " + getStatusRealText(currentMins);
-        document.getElementById('active-teacher-title').innerText = "Jadwal " + activeTeacher;
+        statusBadge.innerText = dayHeaderLabel + " | " + (isViewingToday ? getStatusRealText(currentMins) : "Mode Tinjau");
+        document.getElementById('active-teacher-title').innerText = "Jadwal " + activeTeacher + " (" + currentDayIndo + ")";
         renderTeacherMode(activeTeacher, currentMins);
         return;
       }
@@ -842,23 +869,29 @@
       var statusBadge = document.getElementById('status-info');
       var pInfo = periodTimes[displayJam] ? periodTimes[displayJam].label : "";
 
-      if (manualJam > 0 && manualJam !== realJam) {
-        statusBadge.innerText = currentDayStr + " | Tinjau Jam " + displayJam;
-        document.getElementById('period-badge').innerText = "Tinjau (Manual)";
+      if (!isViewingToday) {
+        statusBadge.innerText = dayHeaderLabel + " | Jam " + displayJam;
+        document.getElementById('period-badge').innerText = `Tinjau (${currentDayIndo})`;
+        document.getElementById('period-badge').style.background = "#fef3c7";
+        document.getElementById('period-badge').style.color = "#92400e";
+      } else if (manualJam > 0 && manualJam !== realJam) {
+        statusBadge.innerText = dayHeaderLabel + " | Tinjau Jam " + displayJam;
+        document.getElementById('period-badge').innerText = "Tinjau Jam (Manual)";
         document.getElementById('period-badge').style.background = "#fef3c7";
         document.getElementById('period-badge').style.color = "#92400e";
       } else {
-        statusBadge.innerText = currentDayStr + " | " + getStatusRealText(currentMins);
+        statusBadge.innerText = dayHeaderLabel + " | " + getStatusRealText(currentMins);
         document.getElementById('period-badge').innerText = "Jam Berjalan";
         document.getElementById('period-badge').style.background = "#dcfce7";
         document.getElementById('period-badge').style.color = "#16a34a";
       }
 
-      document.getElementById('jam-section-title').innerText = `📅 JADWAL KELAS (JAM KE-${displayJam} | ${pInfo} WIB)`;
-      document.getElementById('btn-jam-text').innerText = `Kirim Woro-Woro Pelajaran (Jam ${displayJam}) Sekarang`;
+      const dayTitle = isViewingToday ? currentDayIndo.toUpperCase() : `${currentDayIndo.toUpperCase()} (TINJAU)`;
+      document.getElementById('jam-section-title').innerText = `📅 JADWAL KELAS (${dayTitle} | JAM KE-${displayJam} | ${pInfo} WIB)`;
+      document.getElementById('btn-jam-text').innerText = `Kirim Woro-Woro Pelajaran (${currentDayIndo} - Jam ${displayJam}) Sekarang`;
 
       var btnNow = document.getElementById('btn-now');
-      btnNow.style.display = (manualJam > 0 && manualJam !== realJam) ? 'inline-flex' : 'none';
+      btnNow.style.display = (!isViewingToday || (manualJam > 0 && manualJam !== realJam)) ? 'inline-flex' : 'none';
 
       document.getElementById('btn-prev').disabled = (displayJam === 1);
       document.getElementById('btn-next').disabled = (displayJam === 8);
@@ -965,21 +998,30 @@
     }
 
     // LOAD INITIAL DATA DARI SERVER NODE.JS BOT
-    async function loadTodayJadwal() {
+    async function loadTodayJadwal(dayParam = selectedDayParam) {
+      selectedDayParam = dayParam || "today";
       try {
-        const res = await fetch('/api/jadwal/today');
+        const url = (selectedDayParam === "today")
+          ? `/api/jadwal/today?t=${Date.now()}`
+          : `/api/jadwal/today?day=${selectedDayParam}&t=${Date.now()}`;
+        const res = await fetch(url);
         const resp = await res.json();
         if (resp.success) {
           globalData = resp.data || [];
-          currentDayStr = resp.day || "";
+          currentDayEng = resp.day || "";
+          currentDayIndo = resp.dayIndo || "";
+          currentFullDateIndo = resp.fullDateIndo || "";
+          isViewingToday = !!resp.isToday;
           dataLoaded = true;
 
           // Isi dropdown ustadz
           const sel = document.getElementById('teacher-selector');
+          const currentVal = sel.value;
           sel.innerHTML = '<option value="">🔍 Cari Jadwal Ustadz...</option>';
           (resp.teachers || []).forEach(t => {
             sel.innerHTML += `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`;
           });
+          if (currentVal) sel.value = currentVal;
 
           updateUI();
         }
@@ -987,6 +1029,12 @@
         console.error("Gagal muat jadwal:", err);
       }
     }
+
+    window.onDayChange = function(val) {
+      selectedDayParam = val;
+      manualJam = 0;
+      loadTodayJadwal(val);
+    };
 
     // BOT STATUS & CONFIG
     async function loadStatus() {
@@ -1286,6 +1334,11 @@
     loadContacts();
     setInterval(updateUI, 2000);
     setInterval(loadStatus, 6000);
+    setInterval(function() {
+      if (selectedDayParam === 'today') {
+        loadTodayJadwal('today');
+      }
+    }, 60000);
   </script>
 </body>
 </html>

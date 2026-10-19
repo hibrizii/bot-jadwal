@@ -44,15 +44,57 @@ function writeJSON(file, data) {
   fs.writeFileSync(path.join(__dirname, file), JSON.stringify(data, null, 2), 'utf-8');
 }
 
-// Helper waktu Jakarta (WIB)
-function getJakartaDay() {
-  const d = new Date();
-  const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-  const jkt = new Date(utc + (3600000 * 7));
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+// Helper waktu Jakarta (WIB) yang 100% akurat di semua OS & Timezone
+function getJakartaDay(customDay = null) {
+  const daysEng = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const daysIndo = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const monthsEng = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const monthsIndo = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+  const now = new Date();
+  const dayNameEngAuto = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Jakarta', weekday: 'long' }).format(now);
+  const dayNameEng = customDay || dayNameEngAuto;
+  const dayIndex = daysEng.indexOf(dayNameEng) !== -1 ? daysEng.indexOf(dayNameEng) : daysEng.indexOf(dayNameEngAuto);
+  const dayNameIndo = daysIndo[dayIndex] || "Senin";
+
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Jakarta',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: false
+  }).formatToParts(now);
+
+  const partMap = {};
+  for (const p of parts) partMap[p.type] = p.value;
+
+  const dNum = parseInt(partMap.day);
+  const mNum = parseInt(partMap.month);
+  const yNum = parseInt(partMap.year);
+  const hNum = parseInt(partMap.hour);
+  const minNum = parseInt(partMap.minute);
+
+  const fullDateIndo = `${dayNameIndo}, ${dNum} ${monthsIndo[mNum - 1]} ${yNum}`;
+  const s = ["th", "st", "nd", "rd"];
+  const v = dNum % 100;
+  const ordinalDate = dNum + (s[(v - 20) % 10] || s[v] || s[0]);
+  const dateStrEng = `${dayNameEng}, ${monthsEng[mNum - 1]} ${ordinalDate} ${yNum}`;
+
   return {
-    name: days[jkt.getDay()],
-    date: jkt
+    name: dayNameEng,       // 'Tuesday', 'Monday', dll
+    nameIndo: dayNameIndo,  // 'Selasa', 'Senin', dll
+    fullDateIndo,           // 'Selasa, 20 Oktober 2026'
+    dateStrEng,             // 'Tuesday, October 20th 2026'
+    dayIndex,
+    hours: hNum,
+    minutes: minNum,
+    currentMins: hNum * 60 + minNum,
+    actualTodayEng: dayNameEngAuto,
+    actualTodayIndo: daysIndo[daysEng.indexOf(dayNameEngAuto)] || "Senin",
+    date: now
   };
 }
 
@@ -141,26 +183,19 @@ function buildPiketMessage(jadwalData, kontakMap) {
 
 // 2. Format Pesan Jam Pelajaran
 function buildJamMessage(targetJam, jadwalData, kontakMap) {
-  const { name: dayName, date } = getJakartaDay();
+  const { name: dayName, dateStrEng } = getJakartaDay();
   const daySched = jadwalData.schedule[dayName];
   if (!daySched || !daySched.periods) return null;
 
   const periodsList = daySched.periods[String(targetJam)] || [];
   const mentions = [];
 
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const n = date.getDate();
-  const s = ["th", "st", "nd", "rd"]; const v = n % 100;
-  const ordinalDate = n + (s[(v - 20) % 10] || s[v] || s[0]);
-  const dateStr = days[date.getDay()] + ", " + months[date.getMonth()] + " " + ordinalDate + " " + date.getFullYear();
-
-  const vJ = targetJam % 100;
+  const s = ["th", "st", "nd", "rd"]; const vJ = targetJam % 100;
   const ordJam = targetJam + (s[(vJ - 20) % 10] || s[vJ] || s[0]);
   const pInfo = jadwalData.periodTimes[String(targetJam)] ? jadwalData.periodTimes[String(targetJam)].label : "";
 
   let text = `[Announcement]\n` +
-             `${dateStr}\n` +
+             `${dateStrEng}\n` +
              `Bismillah.\n` +
              `For Ustadz having a schedule at ${ordJam} period at ${pInfo} WIB, please prepare yourself to come to your class\n\n`;
 
@@ -420,9 +455,11 @@ app.get('/api/pairing-code', async (req, res) => {
   }
 });
 
-// API Jadwal Hari Ini (Format Lengkap Kelas & Guru)
+// API Jadwal (Bisa pilih hari: ?day=Monday / Tuesday, atau default hari ini)
 app.get('/api/jadwal/today', (req, res) => {
-  const { name: dayName, date } = getJakartaDay();
+  const requestedDay = req.query.day && req.query.day !== 'today' ? req.query.day : null;
+  const jktInfo = getJakartaDay(requestedDay);
+  const dayName = jktInfo.name;
   const jadwal = readJSON('jadwal.json');
   const daySched = (jadwal && jadwal.schedule) ? jadwal.schedule[dayName] : null;
   const flatData = [];
@@ -470,10 +507,16 @@ app.get('/api/jadwal/today', (req, res) => {
 
   const sortedTeachers = Array.from(teachersSet).sort();
 
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.json({
     success: true,
     day: dayName,
-    date: date,
+    dayIndo: jktInfo.nameIndo,
+    fullDateIndo: jktInfo.fullDateIndo,
+    actualTodayEng: jktInfo.actualTodayEng,
+    actualTodayIndo: jktInfo.actualTodayIndo,
+    isToday: (dayName === jktInfo.actualTodayEng),
+    currentMins: jktInfo.currentMins,
     data: flatData,
     teachers: sortedTeachers,
     periodTimes: jadwal ? jadwal.periodTimes : {}
