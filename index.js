@@ -231,19 +231,22 @@ async function startBot() {
   sock = makeWASocket({
     version,
     logger: pino({ level: 'silent' }),
-    printQRInTerminal: true,
+    printQRInTerminal: false,
     auth: state,
     browser: ['Ubuntu', 'Chrome', '20.0.04']
   });
 
   sock.ev.on('creds.update', saveCreds);
 
+  let qrNotified = false;
   sock.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect, qr } = update;
 
     if (qr) {
-      addLog("QR Code baru diterima. Silakan scan di dashboard / terminal.");
-      qrcodeTerminal.generate(qr, { small: true });
+      if (!qrNotified) {
+        addLog("QR Code siap di web dashboard: http://localhost:3000");
+        qrNotified = true;
+      }
       try {
         currentQRDataURL = await QRCode.toDataURL(qr, { margin: 2, scale: 7 });
       } catch (err) {
@@ -390,6 +393,101 @@ app.get('/api/status', (req, res) => {
   });
 });
 
+// API Jadwal Hari Ini (Format Lengkap Kelas & Guru)
+app.get('/api/jadwal/today', (req, res) => {
+  const { name: dayName, date } = getJakartaDay();
+  const jadwal = readJSON('jadwal.json');
+  const daySched = (jadwal && jadwal.schedule) ? jadwal.schedule[dayName] : null;
+  const flatData = [];
+  const teachersSet = new Set();
+
+  if (daySched) {
+    // 1. Pelajaran Kelas
+    for (const [jamStr, list] of Object.entries(daySched.periods || {})) {
+      const jam = parseInt(jamStr);
+      for (const item of list) {
+        const guruStr = (item.teachers || []).join(' / ');
+        flatData.push({
+          jam,
+          kelas: item.class,
+          mapel: item.subject,
+          guru: guruStr
+        });
+        (item.teachers || []).forEach(t => {
+          if (t && t !== "Kosong") teachersSet.add(t.trim());
+        });
+      }
+    }
+
+    // 2. Piket Lantai 1 & Lantai 4
+    for (const [sesiStr, p] of Object.entries(daySched.piket || {})) {
+      const jamList = sesiStr === '1' ? [1, 2] : (sesiStr === '2' ? [3, 4] : (sesiStr === '3' ? [5, 6] : [7, 8]));
+      for (const j of jamList) {
+        if (p.lt1) {
+          flatData.push({ jam: j, kelas: "Piket Lt. 1", mapel: "Piket", guru: p.lt1 });
+          p.lt1.split('/').forEach(t => { if (t.trim() && t.trim() !== "Kosong") teachersSet.add(t.trim()); });
+        }
+        if (p.lt4) {
+          flatData.push({ jam: j, kelas: "Piket Lt. 4", mapel: "Piket", guru: p.lt4 });
+          p.lt4.split('/').forEach(t => { if (t.trim() && t.trim() !== "Kosong") teachersSet.add(t.trim()); });
+        }
+      }
+    }
+  }
+
+  // Tambahkan juga semua guru dari kontak.json
+  const kontak = readJSON('kontak.json') || {};
+  Object.keys(kontak).forEach(k => {
+    if (k && k.trim()) teachersSet.add(k.trim());
+  });
+
+  const sortedTeachers = Array.from(teachersSet).sort();
+
+  res.json({
+    success: true,
+    day: dayName,
+    date: date,
+    data: flatData,
+    teachers: sortedTeachers,
+    periodTimes: jadwal ? jadwal.periodTimes : {}
+  });
+});
+
+// API Daftar Grup WhatsApp
+app.get('/api/groups', async (req, res) => {
+  const presetGroups = [
+    { id: "120363421823108391@g.us", name: "SMA AL-MAAHIRA PUTRA IIBS MALANG" },
+    { id: "120363403598196152@g.us", name: "PIONIR SMA PUTRA" },
+    { id: "120363422731477590@g.us", name: "Attendance SMA PUTRA" },
+    { id: "120363407336484707@g.us", name: "Konsinyasi Al-Maahira Putra" }
+  ];
+
+  if (!sock || !isConnected) {
+    return res.json({ success: true, groups: presetGroups, fromWhatsApp: false });
+  }
+
+  try {
+    const participating = await sock.groupFetchAllParticipating();
+    const fetched = Object.values(participating).map(g => ({
+      id: g.id,
+      name: g.subject
+    }));
+
+    const existingIds = new Set(fetched.map(g => g.id));
+    for (const p of presetGroups) {
+      if (!existingIds.has(p.id)) {
+        fetched.push(p);
+      }
+    }
+
+    fetched.sort((a, b) => a.name.localeCompare(b.name));
+    res.json({ success: true, groups: fetched, fromWhatsApp: true });
+  } catch (err) {
+    console.error("Gagal ambil grup:", err);
+    res.json({ success: true, groups: presetGroups, error: err.message });
+  }
+});
+
 // API Kontak Guru
 app.get('/api/kontak', (req, res) => {
   const kontak = readJSON('kontak.json') || {};
@@ -422,9 +520,9 @@ app.post('/api/config', (req, res) => {
 
 // API Trigger Manual Broadcast
 app.post('/api/trigger', async (req, res) => {
-  const { type, jam } = req.body;
+  const { type, jam, targetGroupId: customGroup } = req.body;
   const cfg = readJSON('config.json') || {};
-  const targetGroup = cfg.targetGroupId || "120363421823108391@g.us";
+  const targetGroup = customGroup || cfg.targetGroupId || "120363421823108391@g.us";
   const jadwal = readJSON('jadwal.json');
   const kontak = readJSON('kontak.json') || {};
 

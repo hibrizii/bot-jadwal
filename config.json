@@ -1,7 +1,7 @@
 {
-  "targetGroupId": "120363421823108391@g.us",
+  "targetGroupId": "120363422897464733@g.us",
   "autoPiket": true,
-  "autoMengajar": true,
+  "autoMengajar": false,
   "pairingCode": false,
   "phoneNumber": "6285646620724"
 }

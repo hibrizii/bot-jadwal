@@ -2,207 +2,309 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SMA Al-Maahira Bot Gateway & Tagging Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Dashboard Jadwal Real-Time & WhatsApp Bot SMA Al-Maahira</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #059669;
-      --primary-hover: #047857;
-      --primary-light: #ecfdf5;
-      --primary-border: #a7f3d0;
-      --accent: #2563eb;
-      --accent-hover: #1d4ed8;
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --surface-border: #334155;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --success: #10b981;
+      --bg-body: #f8fafc;
+      --bg-surface: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+
+      --brand-primary: #4f46e5;
+      --brand-primary-hover: #4338ca;
+      --brand-success: #10b981;
+      --brand-success-hover: #059669;
+      --brand-warning: #d97706;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      min-height: 100vh;
-      padding: 1.25rem;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif; }
+    body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; padding: 16px; }
 
-    .container {
-      max-width: 1100px;
+    .main-wrapper {
+      max-width: 1280px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 16px;
     }
 
-    /* HEADER */
-    .header {
-      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
-      padding: 1.5rem;
+    /* HEADER & STATUS BAR */
+    .top-header {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 60%, #047857 100%);
+      color: #fff;
+      padding: 20px 24px;
+      border-radius: var(--radius-lg);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      gap: 16px;
+      box-shadow: var(--shadow-lg);
     }
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .header-icon {
-      font-size: 2.25rem;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 0.75rem;
-      padding: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .header-title h1 {
+    .header-info h1 {
       font-size: 1.35rem;
       font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .header-title p {
+    .header-info p {
       font-size: 0.85rem;
       color: #a7f3d0;
+      margin-top: 4px;
       font-weight: 500;
     }
-
-    .badge {
+    .badges-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.4rem 0.85rem;
+      gap: 6px;
+      padding: 6px 14px;
       border-radius: 9999px;
       font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 0.02em;
     }
-    .badge-connected {
+    .pill-clock {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .pill-wa-on {
       background: #064e3b;
       color: #6ee7b7;
-      border: 1px solid #059669;
+      border: 1px solid #10b981;
     }
-    .badge-waiting {
+    .pill-wa-wait {
       background: #78350f;
       color: #fde68a;
       border: 1px solid #d97706;
-      animation: pulse 2s infinite;
-    }
-    .badge-disconnected {
-      background: #7f1d1d;
-      color: #fca5a5;
-      border: 1px solid #dc2626;
+      animation: pulseFade 2s infinite ease-in-out;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    /* GRID LAYOUT */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-    @media (min-width: 900px) {
-      .grid-2 {
-        grid-template-columns: 1fr 1fr;
-      }
-      .grid-3 {
-        grid-template-columns: 1.2fr 1fr;
-      }
-    }
-
-    /* CARDS */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 1rem;
-      padding: 1.25rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    .card-header {
+    /* NAVIGATION CONTROL BAR */
+    .nav-card {
+      background: var(--bg-surface);
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--surface-border);
+      gap: 12px;
+    }
+    .nav-group {
+      display: flex;
+      background: #f1f5f9;
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      gap: 4px;
+    }
+    .btn-nav {
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.88rem;
+      white-space: nowrap;
+    }
+    .btn-nav:hover:not(:disabled) { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+    .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-now {
+      background: var(--brand-primary);
+      color: #fff !important;
+      box-shadow: var(--shadow-sm);
+    }
+    .input-select {
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
+      background: var(--bg-surface);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+      min-width: 220px;
+    }
+    .input-select:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 3px #e0e7ff; }
+
+    /* TWO COLUMN LAYOUT */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    @media (min-width: 960px) {
+      .content-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+    }
+
+    /* CARD STYLES */
+    .card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
     .card-title {
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      color: #f1f5f9;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 10px;
     }
 
-    /* BUTTONS */
-    .btn {
-      display: inline-flex;
+    /* SCHEDULE LIST (KELAS & PIKET) */
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 8px 0 4px 2px;
+    }
+    .list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .list-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: transform 0.15s, border-color 0.15s;
+      box-shadow: var(--shadow-sm);
+    }
+    .list-item:hover { border-color: #cbd5e1; transform: translateX(2px); }
+    .list-item.is-empty { background: #fafafa; border: 1px dashed #cbd5e1; opacity: 0.65; box-shadow: none; }
+
+    .li-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .li-room { font-weight: 800; font-size: 1rem; color: var(--text-main); width: 95px; flex-shrink: 0; }
+    .li-subject {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .li-right { flex: 1; text-align: right; min-width: 0; }
+    .li-teacher { font-weight: 700; font-size: 0.9rem; word-break: break-word; }
+    .empty-text { font-size: 0.85rem; font-style: italic; color: #94a3b8; }
+
+    /* TEACHER TIMELINE VIEW */
+    #teacher-view { display: none; }
+    .timeline-card {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+      background: var(--bg-surface);
+    }
+    .timeline-card.is-past { opacity: 0.45; filter: grayscale(100%); background: #f8fafc; border: 1px dashed #cbd5e1; }
+    .tl-time { width: 85px; flex-shrink: 0; border-right: 2px solid var(--border-light); padding-right: 10px; }
+    .tl-jp { font-size: 1rem; font-weight: 800; color: var(--text-main); }
+    .tl-clock { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-top: 2px; }
+    .tl-detail { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+    .tl-kelas { font-size: 1rem; font-weight: 800; color: var(--text-main); }
+    .tl-mapel { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); }
+    .tl-status .badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .b-selesai { background: #f1f5f9; color: var(--text-muted); }
+    .b-akan { background: #e0e7ff; color: var(--brand-primary); }
+    .b-aktif { background: #dcfce7; color: #16a34a; box-shadow: 0 0 0 2px #bbf7d0; animation: pulseFade 2s infinite ease-in-out; }
+
+    /* WHATSAPP ACTION BUTTONS */
+    .btn-trigger {
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      padding: 0.6rem 1rem;
-      border-radius: 0.6rem;
-      font-size: 0.85rem;
-      font-weight: 600;
+      gap: 8px;
       border: none;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s ease;
-      color: #fff;
+      transition: 0.2s;
+      width: 100%;
     }
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .btn-trigger-jam {
+      background-color: #e0e7ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
     }
-    .btn-primary { background: var(--primary); }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
-    .btn-accent { background: var(--accent); }
-    .btn-accent:hover:not(:disabled) { background: var(--accent-hover); }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
+    .btn-trigger-jam:hover { background-color: #c7d2fe; }
+    .btn-trigger-piket {
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
     }
-    .btn-outline:hover:not(:disabled) {
-      border-color: #64748b;
-      color: #fff;
-    }
+    .btn-trigger-piket:hover { background-color: #fde68a; }
 
-    /* SWITCH TOGGLES */
+    /* TOGGLE SWITCHES */
     .toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-light);
     }
     .toggle-row:last-child { border-bottom: none; }
-    .toggle-info h4 { font-size: 0.9rem; font-weight: 600; }
-    .toggle-info p { font-size: 0.78rem; color: var(--text-muted); }
-    
+    .toggle-info h4 { font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
+    .toggle-info p { font-size: 0.72rem; color: var(--text-muted); }
     .switch {
       position: relative;
       display: inline-block;
-      width: 48px;
-      height: 26px;
+      width: 44px;
+      height: 24px;
       flex-shrink: 0;
     }
     .switch input { opacity: 0; width: 0; height: 0; }
@@ -210,144 +312,82 @@
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #475569;
+      background-color: #cbd5e1;
       transition: .3s;
       border-radius: 34px;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
+      height: 18px;
+      width: 18px;
       left: 3px;
       bottom: 3px;
       background-color: white;
       transition: .3s;
       border-radius: 50%;
     }
-    input:checked + .slider { background-color: var(--primary); }
-    input:checked + .slider:before { transform: translateX(22px); }
-
-    /* INPUTS */
-    .form-group {
-      margin-top: 0.75rem;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 0.35rem;
-    }
-    .input-text, .select {
-      width: 100%;
-      background: #0f172a;
-      border: 1px solid var(--surface-border);
-      border-radius: 0.5rem;
-      padding: 0.55rem 0.75rem;
-      color: #fff;
-      font-size: 0.85rem;
-      outline: none;
-    }
-    .input-text:focus, .select:focus {
-      border-color: var(--primary);
-    }
-
-    /* QR CODE BOX */
-    .qr-container {
-      text-align: center;
-      padding: 1.5rem;
-      background: #0b1120;
-      border-radius: 0.75rem;
-      border: 2px dashed #059669;
-    }
-    .qr-img {
-      max-width: 240px;
-      width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      background: #fff;
-      padding: 0.5rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    }
-    .qr-hint {
-      margin-top: 1rem;
-      font-size: 0.82rem;
-      color: #94a3b8;
-    }
+    input:checked + .slider { background-color: var(--brand-success); }
+    input:checked + .slider:before { transform: translateX(20px); }
 
     /* TEACHER CONTACTS TABLE */
     .contact-table-wrapper {
-      max-height: 380px;
+      max-height: 290px;
       overflow-y: auto;
-      border: 1px solid var(--surface-border);
-      border-radius: 0.5rem;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
     th {
-      background: #0f172a;
+      background: #f8fafc;
       text-align: left;
-      padding: 0.6rem 0.75rem;
-      font-weight: 600;
+      padding: 8px 10px;
+      font-weight: 700;
       color: var(--text-muted);
       position: sticky;
       top: 0;
-      z-index: 10;
-      border-bottom: 1px solid var(--surface-border);
+      z-index: 5;
+      border-bottom: 1px solid var(--border-light);
     }
-    td {
-      padding: 0.5rem 0.75rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
-    }
+    td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
     .phone-input {
       width: 100%;
-      background: #0b1120;
-      border: 1px solid #334155;
-      border-radius: 0.4rem;
-      padding: 0.35rem 0.5rem;
-      color: #6ee7b7;
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      padding: 4px 6px;
       font-family: monospace;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #065f46;
     }
-    .phone-input:focus {
-      border-color: #10b981;
-      outline: none;
-    }
-    .tag-status-pill {
+    .phone-input:focus { border-color: var(--brand-success); outline: none; background: #fff; }
+    .tag-badge {
       display: inline-block;
-      padding: 0.2rem 0.5rem;
+      padding: 2px 6px;
       border-radius: 9999px;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
+      white-space: nowrap;
     }
-    .tag-ready { background: #064e3b; color: #6ee7b7; }
-    .tag-empty { background: #334155; color: #94a3b8; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-none { background: #f1f5f9; color: #94a3b8; }
 
-    /* LOGS BOX */
+    /* ACTIVITY LOGS */
     .log-box {
-      background: #050811;
-      border: 1px solid #1e293b;
-      border-radius: 0.5rem;
-      padding: 0.75rem;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 0.78rem;
-      color: #cbd5e1;
-      max-height: 200px;
+      background: #0f172a;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-family: 'Consolas', monospace;
+      font-size: 0.72rem;
+      color: #94a3b8;
+      max-height: 140px;
       overflow-y: auto;
       white-space: pre-wrap;
       word-break: break-all;
     }
-    .log-entry { margin-bottom: 0.3rem; }
-    .log-success { color: #34d399; }
-    .log-err { color: #f87171; }
-    .log-info { color: #60a5fa; }
+    .log-s { color: #34d399; }
+    .log-e { color: #f87171; }
 
     /* TOAST ALERT */
     #toast {
@@ -359,8 +399,8 @@
       padding: 0.75rem 1.25rem;
       border-radius: 0.5rem;
       font-size: 0.85rem;
-      font-weight: 600;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      font-weight: 700;
+      box-shadow: var(--shadow-lg);
       display: none;
       z-index: 100;
       animation: fadeIn 0.2s ease;
@@ -369,169 +409,210 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes pulseFade {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- HEADER -->
-    <header class="header">
-      <div class="header-left">
-        <div class="header-icon">🕌</div>
-        <div class="header-title">
-          <h1>SMA AL-MAAHIRA PUTRA IIBS MALANG</h1>
-          <p>WhatsApp Tagging Gateway & Jadwal Controller (Baileys Engine)</p>
-        </div>
+  <div class="main-wrapper">
+    
+    <!-- TOP HEADER -->
+    <header class="top-header">
+      <div class="header-info">
+        <h1>🕌 JADWAL REAL-TIME SMA AL-MAAHIRA</h1>
+        <p>WhatsApp Tagging Gateway & Pelajaran Harian (Baileys Cloud Engine)</p>
       </div>
-      <div id="statusBadge" class="badge badge-waiting">
-        <span>⏳ Memeriksa Koneksi...</span>
+      <div class="badges-group">
+        <div class="pill pill-clock">
+          <span id="local-clock">00:00</span> WIB &nbsp;|&nbsp; <span id="status-info">Menyiapkan...</span>
+        </div>
+        <div id="waBadge" class="pill pill-wa-wait">
+          <span>⏳ Cek WA...</span>
+        </div>
       </div>
     </header>
 
-    <!-- SECTION QR CODE (Only visible when not connected) -->
-    <div id="qrCard" class="card" style="display: none;">
-      <div class="card-header">
-        <h2 class="card-title">📱 Scan QR Code WhatsApp (Cukup 1x Saja)</h2>
-        <span style="font-size: 0.8rem; color: var(--text-muted);">Sesi akan otomatis tersimpan</span>
+    <!-- NAVIGATION BAR -->
+    <div class="nav-card" id="home-controls">
+      <div class="nav-group">
+        <button class="btn-nav" id="btn-prev" onclick="changeJam(-1)">&#8592; Prev</button>
+        <button class="btn-nav btn-now" id="btn-now" onclick="resetJam()" style="display:none;">Sekarang</button>
+        <button class="btn-nav" id="btn-next" onclick="changeJam(1)">Next &#8594;</button>
       </div>
-      <div class="qr-container">
-        <img id="qrImg" class="qr-img" src="" alt="WhatsApp QR Code">
-        <div class="qr-hint">
-          <strong>Cara Menghubungkan:</strong><br>
-          1. Buka <strong>WhatsApp</strong> di HP Anda (Nomor Bot)<br>
-          2. Klik menu titik tiga (Android) atau Pengaturan (iPhone) &gt; <strong>Perangkat Tertaut (Linked Devices)</strong><br>
-          3. Klik <strong>Tautkan Perangkat</strong> dan scan QR di atas!
-        </div>
-      </div>
+      <select id="teacher-selector" class="input-select" onchange="switchToTeacherMode(this.value)">
+        <option value="">🔍 Cari Jadwal Ustadz...</option>
+      </select>
     </div>
 
-    <!-- MAIN GRID -->
-    <div class="grid grid-3">
-      <!-- LEFT COLUMN: CONTROLS & TRIGGERS -->
-      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+    <!-- MAIN TWO COLUMN GRID -->
+    <div class="content-grid">
+      
+      <!-- COLUMN 1: JADWAL KELAS & PIKET (MIRIP APPSCRIPT) -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
         
-        <!-- CARD AUTOMATION TOGGLES -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">⚙️ Pengaturan Jadwal Otomatis (Cron 24 Jam)</h2>
-            <button class="btn btn-primary" onclick="saveSettings()">💾 Simpan</button>
+        <!-- CARD GRID JADWAL -->
+        <div class="card" id="schedule-card">
+          <div class="card-title">
+            <span id="jam-section-title">📅 JADWAL KELAS (JAM 1 | 07.15 - 08.00 WIB)</span>
+            <span id="period-badge" style="font-size: 0.75rem; background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 12px;">Aktif</span>
           </div>
 
-          <div class="toggle-row">
-            <div class="toggle-info">
-              <h4>Briefing Guru Piket Pagi</h4>
-              <p>Otomatis kirim setiap 06.30 WIB (Sesi I - IV, Lt. 1 & 4)</p>
+          <div id="grid-view">
+            <h3 class="section-title">Jadwal Kelas Belajar</h3>
+            <div class="list-container">
+              <div class="list-item" data-id="10 I" style="border-left: 4px solid #64748b;">
+                <div class="li-left"><span class="li-room">10 I</span><span class="li-subject mapel-target"></span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
+              <div class="list-item" data-id="10 J" style="border-left: 4px solid #475569;">
+                <div class="li-left"><span class="li-room">10 J</span><span class="li-subject mapel-target"></span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
+              <div class="list-item" data-id="11 STEAM" style="border-left: 4px solid #3b82f6;">
+                <div class="li-left"><span class="li-room">11 STEAM</span><span class="li-subject mapel-target"></span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
+              <div class="list-item" data-id="11 BUSSLAW" style="border-left: 4px solid #8b5cf6;">
+                <div class="li-left"><span class="li-room">11 BUSSLAW</span><span class="li-subject mapel-target"></span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
+              <div class="list-item" data-id="12 STEAM" style="border-left: 4px solid #10b981;">
+                <div class="li-left"><span class="li-room">12 STEAM</span><span class="li-subject mapel-target"></span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
+              <div class="list-item" data-id="12 BUSSLAW" style="border-left: 4px solid #f59e0b;">
+                <div class="li-left"><span class="li-room">12 BUSSLAW</span><span class="li-subject mapel-target"></span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
+              <div class="list-item" data-id="12 IGPA" style="border-left: 4px solid #0ea5e9;">
+                <div class="li-left"><span class="li-room">12 IGPA</span><span class="li-subject mapel-target"></span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
             </div>
-            <label class="switch">
-              <input type="checkbox" id="autoPiketCheck">
-              <span class="slider"></span>
-            </label>
-          </div>
 
-          <div class="toggle-row">
-            <div class="toggle-info">
-              <h4>Woro-Woro Jam Mengajar (H-10 Menit)</h4>
-              <p>Otomatis kirim 10 menit sebelum bel Jam 1 s.d. 8</p>
+            <h3 class="section-title" style="margin-top: 18px;">Tugas Guru Piket</h3>
+            <div class="list-container">
+              <div class="list-item" data-id="Piket Lt. 1" data-piket="1" style="border-left: 4px solid #eab308;">
+                <div class="li-left"><span class="li-room">Lantai 1</span><span class="li-subject" style="background:#fff7ed; color:#9a3412;">Piket</span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
+              <div class="list-item" data-id="Piket Lt. 4" data-piket="4" style="border-left: 4px solid #d97706;">
+                <div class="li-left"><span class="li-room">Lantai 4</span><span class="li-subject" style="background:#fff7ed; color:#9a3412;">Piket</span></div>
+                <div class="li-right"><span class="li-teacher guru-target"><span class="empty-text">- Kosong -</span></span></div>
+              </div>
             </div>
-            <label class="switch">
-              <input type="checkbox" id="autoMengajarCheck">
-              <span class="slider"></span>
-            </label>
           </div>
 
-          <div class="form-group">
-            <label for="targetGroupId">ID Grup WhatsApp Target Broadcast:</label>
-            <input type="text" id="targetGroupId" class="input-text" placeholder="120363421823108391@g.us">
-            <small style="color: #64748b; font-size: 0.75rem; margin-top: 0.25rem; display: block;">
-              Default: <code>120363421823108391@g.us</code> (SMA AL-MAAHIRA PUTRA)
-            </small>
+          <!-- TEACHER TIMELINE VIEW (SAAT KLIK USTADZ) -->
+          <div id="teacher-view">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px;">
+              <button class="btn-nav" onclick="backToHome()" style="background:#f1f5f9; padding: 6px 12px; font-size: 0.82rem;">&#8592; Beranda Utama</button>
+              <h4 id="active-teacher-title" style="font-weight: 800; font-size: 0.95rem; color: var(--brand-primary);">Jadwal Mengajar</h4>
+            </div>
+            <div id="teacher-timeline" class="list-container"></div>
           </div>
-        </div>
 
-        <!-- CARD MANUAL ACTIONS -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">🚀 Uji Coba Pengiriman Manual (Realtime Tag)</h2>
-          </div>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-            Klik tombol di bawah untuk mengetes kirim woro-woro langsung ke grup dengan tag biru aktif:
-          </p>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
-            <button class="btn btn-accent" onclick="triggerPiket()">
-              📋 Kirim Piket Hari Ini
+          <!-- TOMBOL KIRIM INSTAN DARI JADWAL YANG DITAMPILKAN -->
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px; border-top: 1px solid var(--border-light); padding-top: 14px;">
+            <div style="font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between;">
+              <span>Target Broadcast: <strong id="btnTargetGroupLabel" style="color: #059669;">Memuat grup...</strong></span>
+              <span style="font-weight: 700; color: #2563eb;">Tag Biru Aktif ✔️</span>
+            </div>
+            <button class="btn-trigger btn-trigger-jam" onclick="triggerDisplayedJam()">
+              <span>🔔</span> <span id="btn-jam-text">Kirim Woro-Woro Pelajaran (Jam 1) Sekarang</span>
             </button>
-            <button class="btn btn-primary" onclick="triggerJamCurrent()">
-              🔔 Kirim Jam Aktif Sekarang
+            <button class="btn-trigger btn-trigger-piket" onclick="triggerPiket()">
+              <span>📋</span> Kirim Rekap Guru Piket Hari Ini (Sesi I - IV)
             </button>
           </div>
-
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <select id="selectJam" class="select" style="max-width: 160px;">
-              <option value="1">Jam 1 (07.15)</option>
-              <option value="2">Jam 2 (08.00)</option>
-              <option value="3">Jam 3 (09.15)</option>
-              <option value="4">Jam 4 (10.00)</option>
-              <option value="5">Jam 5 (10.45)</option>
-              <option value="6">Jam 6 (12.45)</option>
-              <option value="7">Jam 7 (13.30)</option>
-              <option value="8">Jam 8 (14.15)</option>
-            </select>
-            <button class="btn btn-outline" onclick="triggerJamSpecific()">
-              Kirim Jam Pilihan
-            </button>
-          </div>
-        </div>
-
-        <!-- CARD ACTIVITY LOGS -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">📜 Log Aktivitas Bot</h2>
-            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="refreshStatus()">🔄 Refresh</button>
-          </div>
-          <div id="logBox" class="log-box">Memuat log...</div>
         </div>
 
       </div>
 
-      <!-- RIGHT COLUMN: TEACHER CONTACTS (TAGGING SYSTEM) -->
-      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      <!-- COLUMN 2: KONTROL WHATSAPP & DAFTAR KONTAK GURU -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
         
+        <!-- CARD GRUP & OTOMASI -->
         <div class="card">
-          <div class="card-header">
-            <div>
-              <h2 class="card-title">👥 Kontak Ustadz (Target Tag Biru WA)</h2>
-              <p style="font-size: 0.75rem; color: var(--text-muted);">Nomor HP digunakan untuk mention aktif (@nomor) berdering di HP guru</p>
+          <div class="card-title">
+            <span>⚙️ Pengaturan Gateway & Otomasi</span>
+            <button class="btn-nav" style="background: #10b981; color: white; padding: 4px 10px; font-size: 0.75rem;" onclick="saveSettings()">💾 Simpan</button>
+          </div>
+
+          <!-- PILIH GRUP DROPDOWN -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="groupSelect" style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Pilih Grup WhatsApp Tujuan:</label>
+              <button class="btn-nav" style="padding: 2px 8px; font-size: 0.72rem; background: #f1f5f9;" onclick="loadGroups(true)">🔄 Refresh</button>
             </div>
-            <button class="btn btn-primary" onclick="saveContacts()">💾 Simpan Kontak</button>
+            <select id="groupSelect" class="input-select" style="width: 100%;" onchange="onGroupSelectChange()">
+              <option value="">-- Memuat daftar grup WhatsApp... --</option>
+            </select>
+            <input type="hidden" id="targetGroupId">
+          </div>
+
+          <!-- TWO TOGGLES -->
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>Otomatis Woro-Woro Piket</h4>
+                <p>Kirim rekap tiap pagi pukul 06.30 WIB</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="autoPiketCheck">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>Otomatis Pengingat Mengajar</h4>
+                <p>Kirim 10 menit sebelum tiap bel jam pelajaran</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="autoMengajarCheck">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD KONTAK GURU (TAGGING MANAGER) -->
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <span>👥 Kontak Guru (Target Tag Biru)</span>
+              <p style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">Nomor HP di-mention aktif (@nomor) berdering di HP guru</p>
+            </div>
+            <button class="btn-nav" style="background: var(--brand-primary); color: white; padding: 4px 10px; font-size: 0.75rem;" onclick="saveContacts()">💾 Simpan</button>
           </div>
 
           <!-- QUICK PASTE ACCORDION -->
-          <details style="margin-bottom: 1rem; background: #0f172a; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid var(--surface-border);">
-            <summary style="cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #a7f3d0;">
+          <details style="background: #f8fafc; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+            <summary style="cursor: pointer; font-size: 0.78rem; font-weight: 700; color: var(--brand-primary);">
               📋 Tempel Cepat dari Spreadsheet (Klik di sini)
             </summary>
-            <div style="margin-top: 0.5rem;">
-              <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">
-                Copy kolom [Nama Guru] & [Nomor HP] dari Excel/Google Sheets Anda, lalu paste di kotak berikut:
-              </p>
-              <textarea id="pasteArea" class="input-text" style="height: 90px; font-family: monospace; font-size: 0.75rem;" placeholder="Ust. Arya  081234567890&#10;Ust. Robby  085678912345"></textarea>
-              <button class="btn btn-accent" style="margin-top: 0.5rem; width: 100%; font-size: 0.8rem;" onclick="parsePastedContacts()">
+            <div style="margin-top: 8px;">
+              <textarea id="pasteArea" style="width: 100%; height: 80px; font-family: monospace; font-size: 0.75rem; padding: 6px; border: 1px solid var(--border-light); border-radius: 4px;" placeholder="Ust. Arya  081234567890&#10;Ust. Robby  085678912345"></textarea>
+              <button class="btn-nav" style="margin-top: 6px; width: 100%; background: #065f46; color: white; font-size: 0.75rem;" onclick="parsePastedContacts()">
                 ⚡ Terapkan Nomor ke Tabel di Bawah
               </button>
             </div>
           </details>
 
-          <!-- SEARCH INPUT -->
-          <input type="text" id="searchTeacher" class="input-text" placeholder="🔍 Cari nama ustadz..." oninput="filterTeachers()" style="margin-bottom: 0.75rem;">
+          <input type="text" id="searchTeacher" placeholder="🔍 Cari nama guru..." oninput="renderContactsTable()" style="padding: 6px 10px; font-size: 0.8rem; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none;">
 
           <div class="contact-table-wrapper">
             <table>
               <thead>
                 <tr>
-                  <th style="width: 40px;">No</th>
+                  <th style="width: 30px;">No</th>
                   <th>Nama Guru</th>
-                  <th>Nomor HP / WhatsApp</th>
-                  <th style="width: 85px;">Tag</th>
+                  <th>Nomor WhatsApp</th>
+                  <th style="width: 70px;">Status</th>
                 </tr>
               </thead>
               <tbody id="contactTableBody">
@@ -539,23 +620,77 @@
               </tbody>
             </table>
           </div>
-          
-          <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: var(--text-muted);">
-            <span id="contactCount">Total: 0 guru</span>
-            <span id="taggedCount" style="color: #6ee7b7; font-weight: 600;">0 siap tag</span>
-          </div>
 
+          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+            <span id="contactCount">0 guru</span>
+            <span id="taggedCount" style="color: #059669; font-weight: 700;">0 siap tag aktif</span>
+          </div>
+        </div>
+
+        <!-- CARD LOGS -->
+        <div class="card">
+          <div class="card-title">
+            <span>📜 Log Aktivitas Broadcast</span>
+            <button class="btn-nav" style="padding: 2px 6px; font-size: 0.72rem; background: #f1f5f9;" onclick="loadStatus()">🔄 Refresh</button>
+          </div>
+          <div id="logBox" class="log-box">Memuat riwayat pengiriman...</div>
         </div>
 
       </div>
+
     </div>
+
   </div>
 
   <div id="toast">Notifikasi</div>
 
   <script>
-    let teacherContacts = {};
-    let botConfig = {};
+    var globalData = [];
+    var currentDayStr = "";
+    var dataLoaded = false;
+    var manualJam = 0;
+    var activeTeacher = "";
+    var teacherContacts = {};
+    var botConfig = {};
+    var groupsLoaded = false;
+
+    // Matriks Waktu aSc Timetables SMA Al-Maahira (dalam Menit dari 00:00)
+    var periodTimes = {
+      1: { start: 435, end: 480, label: "07.15 - 08.00" },
+      2: { start: 480, end: 525, label: "08.00 - 08.45" },
+      3: { start: 555, end: 600, label: "09.15 - 10.00" },
+      4: { start: 600, end: 645, label: "10.00 - 10.45" },
+      5: { start: 645, end: 690, label: "10.45 - 11.30" },
+      6: { start: 765, end: 810, label: "12.45 - 13.30" },
+      7: { start: 810, end: 855, label: "13.30 - 14.15" },
+      8: { start: 855, end: 900, label: "14.15 - 15.00" }
+    };
+
+    var classStyles = {
+      "10 I": "border-left: 4px solid #64748b;",
+      "10 J": "border-left: 4px solid #475569;",
+      "11 STEAM": "border-left: 4px solid #3b82f6;",
+      "11 BUSSLAW": "border-left: 4px solid #8b5cf6;",
+      "12 STEAM": "border-left: 4px solid #10b981;",
+      "12 BUSSLAW": "border-left: 4px solid #f59e0b;",
+      "12 IGPA": "border-left: 4px solid #0ea5e9;",
+      "Piket Lt. 1": "border-left: 4px solid #eab308;",
+      "Piket Lt. 4": "border-left: 4px solid #d97706;"
+    };
+
+    var teacherColorPalette = [
+      "#4f46e5", "#0284c7", "#059669", "#7c3aed", "#ea580c",
+      "#0d9488", "#475569", "#db2777", "#ca8a04", "#2563eb"
+    ];
+
+    function getTeacherColor(name) {
+      if (!name || name.indexOf("Kosong") !== -1 || name === "-") return "#94a3b8";
+      var hash = 0;
+      for (var i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return teacherColorPalette[Math.abs(hash) % teacherColorPalette.length];
+    }
 
     function showToast(msg, isErr = false) {
       const t = document.getElementById('toast');
@@ -565,50 +700,277 @@
       setTimeout(() => { t.style.display = 'none'; }, 3500);
     }
 
+    function startClock() {
+      setInterval(function() {
+        var d = new Date();
+        var h = d.getHours().toString().padStart(2, '0');
+        var m = d.getMinutes().toString().padStart(2, '0');
+        var clk = document.getElementById('local-clock');
+        if (clk) clk.innerText = h + ':' + m;
+      }, 1000);
+    }
+    startClock();
+
+    function getRealJamForNav(m) {
+      if (m < 480) return 1;
+      if (m < 525) return 2;
+      if (m < 600) return 3;
+      if (m < 645) return 4;
+      if (m < 690) return 5;
+      if (m < 810) return 6;
+      if (m < 855) return 7;
+      return 8;
+    }
+
+    function getStatusRealText(m) {
+      if (m >= 435 && m < 480) return "Belajar (Jam 1)";
+      if (m >= 480 && m < 525) return "Belajar (Jam 2)";
+      if (m >= 525 && m < 555) return "Istirahat Dhuha";
+      if (m >= 555 && m < 600) return "Belajar (Jam 3)";
+      if (m >= 600 && m < 645) return "Belajar (Jam 4)";
+      if (m >= 645 && m < 690) return "Belajar (Jam 5)";
+      if (m >= 690 && m < 765) return "Istirahat / Ishoma";
+      if (m >= 765 && m < 810) return "Belajar (Jam 6)";
+      if (m >= 810 && m < 855) return "Belajar (Jam 7)";
+      if (m >= 855 && m <= 900) return "Belajar (Jam 8)";
+      return "Luar Jam Sekolah";
+    }
+
+    window.changeJam = function(delta) {
+      var nowMins = new Date().getHours() * 60 + new Date().getMinutes();
+      var realJam = getRealJamForNav(nowMins);
+      var baseJam = manualJam > 0 ? manualJam : realJam;
+      var newJam = baseJam + delta;
+      if (newJam >= 1 && newJam <= 8) {
+        manualJam = (newJam === realJam) ? 0 : newJam;
+        updateUI();
+      }
+    };
+
+    window.resetJam = function() { manualJam = 0; updateUI(); };
+    window.switchToTeacherMode = function(tName) {
+      activeTeacher = tName;
+      document.getElementById('teacher-selector').value = tName;
+      updateUI();
+    };
+    window.backToHome = function() {
+      activeTeacher = "";
+      document.getElementById('teacher-selector').value = "";
+      updateUI();
+    };
+
+    function findTargetCard(kelasName) {
+      if (!kelasName) return null;
+      var k = kelasName.trim();
+      var el = document.querySelector('#grid-view [data-id="' + k + '"]');
+      if (el) return el;
+
+      var lower = k.toLowerCase();
+      if (lower.indexOf("piket") !== -1 || lower.indexOf("lantai") !== -1 || lower.indexOf("lt") !== -1) {
+        if (lower.indexOf("1") !== -1) return document.querySelector('#grid-view [data-piket="1"]');
+        if (lower.indexOf("4") !== -1) return document.querySelector('#grid-view [data-piket="4"]');
+      }
+      return null;
+    }
+
+    function updateUI() {
+      if (!dataLoaded) return;
+
+      var now = new Date();
+      var currentMins = now.getHours() * 60 + now.getMinutes();
+      var realJam = getRealJamForNav(currentMins);
+      var isTeacherMode = activeTeacher !== "";
+
+      document.getElementById('grid-view').style.display = isTeacherMode ? 'none' : 'block';
+      document.getElementById('teacher-view').style.display = isTeacherMode ? 'block' : 'none';
+
+      if (isTeacherMode) {
+        document.getElementById('status-info').innerText = currentDayStr + " | " + getStatusRealText(currentMins);
+        document.getElementById('active-teacher-title').innerText = "Jadwal " + activeTeacher;
+        renderTeacherMode(activeTeacher, currentMins);
+        return;
+      }
+
+      var displayJam = manualJam > 0 ? manualJam : realJam;
+      var statusBadge = document.getElementById('status-info');
+      var pInfo = periodTimes[displayJam] ? periodTimes[displayJam].label : "";
+
+      if (manualJam > 0 && manualJam !== realJam) {
+        statusBadge.innerText = currentDayStr + " | Tinjau Jam " + displayJam;
+        document.getElementById('period-badge').innerText = "Tinjau (Manual)";
+        document.getElementById('period-badge').style.background = "#fef3c7";
+        document.getElementById('period-badge').style.color = "#92400e";
+      } else {
+        statusBadge.innerText = currentDayStr + " | " + getStatusRealText(currentMins);
+        document.getElementById('period-badge').innerText = "Jam Berjalan";
+        document.getElementById('period-badge').style.background = "#dcfce7";
+        document.getElementById('period-badge').style.color = "#16a34a";
+      }
+
+      document.getElementById('jam-section-title').innerText = `📅 JADWAL KELAS (JAM KE-${displayJam} | ${pInfo} WIB)`;
+      document.getElementById('btn-jam-text').innerText = `Kirim Woro-Woro Pelajaran (Jam ${displayJam}) Sekarang`;
+
+      var btnNow = document.getElementById('btn-now');
+      btnNow.style.display = (manualJam > 0 && manualJam !== realJam) ? 'inline-flex' : 'none';
+
+      document.getElementById('btn-prev').disabled = (displayJam === 1);
+      document.getElementById('btn-next').disabled = (displayJam === 8);
+
+      renderGridMode(displayJam);
+    }
+
+    function renderTeacherMode(tName, currentMins) {
+      var tl = document.getElementById('teacher-timeline');
+      tl.innerHTML = "";
+
+      var tData = [];
+      for (var i = 0; i < globalData.length; i++) {
+        if (globalData[i].guru && globalData[i].guru.indexOf(tName) !== -1) {
+          tData.push(globalData[i]);
+        }
+      }
+      tData.sort(function(a, b) { return a.jam - b.jam; });
+
+      if (tData.length === 0) {
+        tl.innerHTML = '<div style="text-align:center; padding: 30px; color:#94a3b8;"><h3>🗓️ Tidak Ada Jadwal Hari Ini</h3><p>Beliau tidak mengajar / piket pada hari ini.</p></div>';
+        return;
+      }
+
+      for (var k = 0; k < tData.length; k++) {
+        var d = tData[k];
+        var pInfo = periodTimes[d.jam];
+        if (!pInfo) continue;
+
+        var statusHtml = "";
+        var pastClass = "";
+        if (currentMins >= pInfo.end) {
+          statusHtml = '<span class="badge b-selesai">Selesai</span>';
+          pastClass = "is-past";
+        } else if (currentMins >= pInfo.start && currentMins < pInfo.end) {
+          statusHtml = '<span class="badge b-aktif">Berlangsung</span>';
+        } else {
+          statusHtml = '<span class="badge b-akan">Akan Datang</span>';
+        }
+
+        var isPiket = d.kelas.toLowerCase().indexOf("piket") !== -1 || d.kelas.toLowerCase().indexOf("lantai") !== -1;
+        var icon = isPiket ? "📋" : "🏫";
+        var mapelText = isPiket ? "Tugas Pengawasan Piket" : d.mapel;
+        var customStyle = classStyles[d.kelas] || "border-left: 4px solid #94a3b8;";
+
+        tl.innerHTML += `
+          <div class="timeline-card ${pastClass}" style="${customStyle}">
+            <div class="tl-time">
+              <div class="tl-jp">Jam ${d.jam}</div>
+              <div class="tl-clock">${pInfo.label}</div>
+            </div>
+            <div class="tl-detail">
+              <div class="tl-kelas">${icon} ${d.kelas}</div>
+              <div class="tl-mapel">${mapelText}</div>
+            </div>
+            <div class="tl-status">${statusHtml}</div>
+          </div>
+        `;
+      }
+    }
+
+    function renderGridMode(displayJam) {
+      var items = document.querySelectorAll('#grid-view .list-item');
+      for (var i = 0; i < items.length; i++) {
+        items[i].classList.add('is-empty');
+        var isPik = items[i].getAttribute('data-id')?.indexOf("Piket") !== -1;
+        var guruContainer = items[i].querySelector('.guru-target');
+        if (guruContainer) guruContainer.innerHTML = '<span class="empty-text">- Kosong -</span>';
+
+        var mapelContainer = items[i].querySelector('.mapel-target');
+        if (mapelContainer && !isPik) mapelContainer.style.display = 'none';
+      }
+
+      if (displayJam === 0) return;
+
+      for (var i = 0; i < globalData.length; i++) {
+        var item = globalData[i];
+        if (item.jam === displayJam) {
+          var card = findTargetCard(item.kelas);
+          if (card) {
+            card.classList.remove('is-empty');
+            var isPik = card.getAttribute('data-id')?.indexOf("Piket") !== -1;
+
+            var mapelEl = card.querySelector('.mapel-target');
+            if (mapelEl && !isPik) {
+              mapelEl.innerText = item.mapel;
+              mapelEl.style.display = 'inline-block';
+            }
+
+            var guruEl = card.querySelector('.guru-target');
+            if (guruEl) {
+              var parts = item.guru.split('/');
+              var gHtml = [];
+              for (var j = 0; j < parts.length; j++) {
+                var g = parts[j].trim();
+                var color = getTeacherColor(g);
+                gHtml.push('<span style="color:' + color + ';">' + g + '</span>');
+              }
+              guruEl.innerHTML = gHtml.join(" / ");
+            }
+          }
+        }
+      }
+    }
+
+    // LOAD INITIAL DATA DARI SERVER NODE.JS BOT
+    async function loadTodayJadwal() {
+      try {
+        const res = await fetch('/api/jadwal/today');
+        const resp = await res.json();
+        if (resp.success) {
+          globalData = resp.data || [];
+          currentDayStr = resp.day || "";
+          dataLoaded = true;
+
+          // Isi dropdown ustadz
+          const sel = document.getElementById('teacher-selector');
+          sel.innerHTML = '<option value="">🔍 Cari Jadwal Ustadz...</option>';
+          (resp.teachers || []).forEach(t => {
+            sel.innerHTML += `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`;
+          });
+
+          updateUI();
+        }
+      } catch (err) {
+        console.error("Gagal muat jadwal:", err);
+      }
+    }
+
+    // BOT STATUS & CONFIG
     async function loadStatus() {
       try {
         const res = await fetch('/api/status');
         const data = await res.json();
-        
-        // Status Badge
-        const badge = document.getElementById('statusBadge');
-        const qrCard = document.getElementById('qrCard');
-        const qrImg = document.getElementById('qrImg');
 
+        const badge = document.getElementById('waBadge');
         if (data.connected) {
-          badge.className = 'badge badge-connected';
-          badge.innerHTML = `<span>🟢 WhatsApp Terhubung (${data.user || 'Aktif'})</span>`;
-          qrCard.style.display = 'none';
-        } else if (data.qr) {
-          badge.className = 'badge badge-waiting';
-          badge.innerHTML = `<span>🟡 Menunggu Scan QR</span>`;
-          qrImg.src = data.qr;
-          qrCard.style.display = 'block';
+          badge.className = 'pill pill-wa-on';
+          badge.innerHTML = `<span>🟢 WhatsApp Aktif (${data.user || 'Terhubung'})</span>`;
         } else {
-          badge.className = 'badge badge-disconnected';
-          badge.innerHTML = `<span>🔴 Memulai Bot WhatsApp...</span>`;
-          qrCard.style.display = 'none';
+          badge.className = 'pill pill-wa-wait';
+          badge.innerHTML = `<span>🟡 Menunggu Scan WA</span>`;
         }
 
-        // Config
         botConfig = data.config || {};
         document.getElementById('autoPiketCheck').checked = !!botConfig.autoPiket;
         document.getElementById('autoMengajarCheck').checked = !!botConfig.autoMengajar;
         document.getElementById('targetGroupId').value = botConfig.targetGroupId || '';
 
-        // Logs
+        // Update logs
         const logBox = document.getElementById('logBox');
         if (data.logs && data.logs.length > 0) {
           logBox.innerHTML = data.logs.map(l => {
-            let cls = 'log-entry';
-            if (l.includes('[SUKSES]') || l.includes('terkirim')) cls += ' log-success';
-            else if (l.includes('[ERROR]') || l.includes('Gagal')) cls += ' log-err';
-            else cls += ' log-info';
+            let cls = '';
+            if (l.includes('[SUKSES]') || l.includes('terkirim')) cls = 'log-s';
+            else if (l.includes('[ERROR]') || l.includes('Gagal')) cls = 'log-e';
             return `<div class="${cls}">${escapeHtml(l)}</div>`;
           }).join('');
           logBox.scrollTop = logBox.scrollHeight;
-        } else {
-          logBox.innerHTML = '<div style="color: #64748b;">Belum ada riwayat pengiriman.</div>';
         }
 
       } catch (err) {
@@ -616,51 +978,107 @@
       }
     }
 
+    // GROUPS SELECTOR
+    async function loadGroups(force = false) {
+      if (groupsLoaded && !force) return;
+      const select = document.getElementById('groupSelect');
+      if (force) select.innerHTML = '<option value="">⏳ Mengambil daftar grup WhatsApp...</option>';
+      try {
+        const res = await fetch('/api/groups');
+        const data = await res.json();
+        if (data.groups && data.groups.length > 0) {
+          const currentTarget = document.getElementById('targetGroupId').value || botConfig.targetGroupId || "120363421823108391@g.us";
+          let html = '';
+          data.groups.forEach(g => {
+            const isSel = g.id === currentTarget;
+            html += `<option value="${g.id}" ${isSel ? 'selected' : ''}>${escapeHtml(g.name)}</option>`;
+          });
+          select.innerHTML = html;
+          groupsLoaded = true;
+          onGroupSelectChange();
+          if (force) showToast('Daftar grup WhatsApp berhasil dimuat! ✔️');
+        }
+      } catch (e) {
+        console.error("Gagal muat grup:", e);
+      }
+    }
+
+    function onGroupSelectChange() {
+      const select = document.getElementById('groupSelect');
+      const val = select.value;
+      const text = select.options[select.selectedIndex]?.text || val;
+      document.getElementById('targetGroupId').value = val;
+      const targetLabel = document.getElementById('btnTargetGroupLabel');
+      if (targetLabel) targetLabel.innerText = text;
+      saveSettings(false);
+    }
+
+    function getSelectedGroupId() {
+      return document.getElementById('targetGroupId').value.trim() || botConfig.targetGroupId || "120363421823108391@g.us";
+    }
+
+    async function saveSettings(showToastMsg = true) {
+      try {
+        const newCfg = {
+          autoPiket: document.getElementById('autoPiketCheck').checked,
+          autoMengajar: document.getElementById('autoMengajarCheck').checked,
+          targetGroupId: document.getElementById('targetGroupId').value.trim()
+        };
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newCfg)
+        });
+        const data = await res.json();
+        if (data.success && showToastMsg) showToast('Pengaturan bot tersimpan! ✔️');
+      } catch (e) {
+        if (showToastMsg) showToast('Gagal simpan pengaturan', true);
+      }
+    }
+
+    // TEACHER CONTACTS TABLE
     async function loadContacts() {
       try {
         const res = await fetch('/api/kontak');
         teacherContacts = await res.json();
         renderContactsTable();
-      } catch (err) {
-        console.error("Gagal load kontak:", err);
+      } catch (e) {
+        console.error("Gagal load kontak:", e);
       }
     }
 
     function renderContactsTable() {
       const tbody = document.getElementById('contactTableBody');
       const search = (document.getElementById('searchTeacher').value || '').toLowerCase();
-      
       const names = Object.keys(teacherContacts).sort();
       let html = '';
       let readyCount = 0;
-      let total = 0;
 
       names.forEach((name, idx) => {
         const phone = teacherContacts[name] || '';
-        if (phone && phone.trim().length >= 9) readyCount++;
-        total++;
+        const isReady = phone && phone.trim().length >= 9;
+        if (isReady) readyCount++;
 
         if (search && !name.toLowerCase().includes(search) && !phone.includes(search)) return;
 
-        const hasPhone = phone && phone.trim().length >= 9;
-        const tagBadge = hasPhone 
-          ? '<span class="tag-status-pill tag-ready">Tag Biru</span>'
-          : '<span class="tag-status-pill tag-empty">Polos</span>';
+        const badge = isReady 
+          ? '<span class="tag-badge tag-blue">Tag Biru</span>'
+          : '<span class="tag-badge tag-none">Polos</span>';
 
         html += `
           <tr>
-            <td style="color: var(--text-muted); font-size: 0.75rem;">${idx + 1}</td>
-            <td style="font-weight: 600; color: #f8fafc;">${escapeHtml(name)}</td>
+            <td style="color:var(--text-muted);">${idx + 1}</td>
+            <td style="font-weight:700;">${escapeHtml(name)}</td>
             <td>
               <input type="text" class="phone-input" data-teacher="${escapeHtml(name)}" value="${escapeHtml(phone)}" placeholder="08xxxxxxxx" onchange="onPhoneChange(this)">
             </td>
-            <td>${tagBadge}</td>
+            <td>${badge}</td>
           </tr>
         `;
       });
 
-      tbody.innerHTML = html || '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Tidak ada guru ditemukan</td></tr>';
-      document.getElementById('contactCount').innerText = `Total: ${total} ustadz`;
+      tbody.innerHTML = html || '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Tidak ada guru</td></tr>';
+      document.getElementById('contactCount').innerText = `${names.length} guru terdaftar`;
       document.getElementById('taggedCount').innerText = `${readyCount} siap tag aktif`;
     }
 
@@ -674,17 +1092,12 @@
       renderContactsTable();
     }
 
-    function filterTeachers() {
-      renderContactsTable();
-    }
-
     function parsePastedContacts() {
       const raw = document.getElementById('pasteArea').value;
       if (!raw.trim()) return showToast('Tempel data terlebih dahulu!', true);
 
       const lines = raw.split('\n');
-      let matchCount = 0;
-
+      let count = 0;
       for (const line of lines) {
         if (!line.trim()) continue;
         const parts = line.split(/[\t,;]+|\s{2,}/);
@@ -694,18 +1107,17 @@
           if (rawPhone.startsWith('08')) rawPhone = '62' + rawPhone.substring(1);
           else if (rawPhone.startsWith('8')) rawPhone = '62' + rawPhone;
 
-          for (const key in teacherContacts) {
-            if (key.toLowerCase().includes(rawName.toLowerCase()) || rawName.toLowerCase().includes(key.toLowerCase())) {
-              teacherContacts[key] = rawPhone;
-              matchCount++;
+          for (const k in teacherContacts) {
+            if (k.toLowerCase().includes(rawName.toLowerCase()) || rawName.toLowerCase().includes(k.toLowerCase())) {
+              teacherContacts[k] = rawPhone;
+              count++;
               break;
             }
           }
         }
       }
-
       renderContactsTable();
-      showToast(`Berhasil menerapkan ${matchCount} nomor ustadz! Jangan lupa klik Simpan.`);
+      showToast(`Berhasil menerapkan ${count} nomor guru! Klik Simpan.`);
     }
 
     async function saveContacts() {
@@ -716,104 +1128,64 @@
           body: JSON.stringify(teacherContacts)
         });
         const data = await res.json();
-        if (data.success) {
-          showToast('Kontak guru berhasil disimpan! ✔️');
-        } else {
-          showToast('Gagal menyimpan kontak', true);
-        }
+        if (data.success) showToast('Kontak guru berhasil disimpan! ✔️');
+        else showToast('Gagal simpan kontak', true);
       } catch (e) {
-        showToast('Error koneksi ke server bot', true);
+        showToast('Error koneksi', true);
       }
     }
 
-    async function saveSettings() {
+    // TRIGGER BROADCAST WHATSAPP
+    async function triggerDisplayedJam() {
+      var nowMins = new Date().getHours() * 60 + new Date().getMinutes();
+      var currentDisplay = manualJam > 0 ? manualJam : getRealJamForNav(nowMins);
+      const targetId = getSelectedGroupId();
+      const targetName = document.getElementById('btnTargetGroupLabel')?.innerText || targetId;
+
+      if (!confirm(`Kirim Woro-Woro Pelajaran Jam ${currentDisplay} ke grup "${targetName}" sekarang?`)) return;
+
       try {
-        const newCfg = {
-          autoPiket: document.getElementById('autoPiketCheck').checked,
-          autoMengajar: document.getElementById('autoMengajarCheck').checked,
-          targetGroupId: document.getElementById('targetGroupId').value.trim()
-        };
-        const res = await fetch('/api/config', {
+        showToast(`Sedang mengirim woro-woro Jam ${currentDisplay}...`);
+        const res = await fetch('/api/trigger', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newCfg)
+          body: JSON.stringify({ type: 'jam', jam: currentDisplay, targetGroupId: targetId })
         });
         const data = await res.json();
         if (data.success) {
-          showToast('Pengaturan bot berhasil disimpan! ✔️');
+          showToast(`Woro-woro Jam ${currentDisplay} terkirim ke "${targetName}"! 🚀`);
         } else {
-          showToast('Gagal menyimpan pengaturan', true);
+          showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
         }
+        loadStatus();
       } catch (e) {
-        showToast('Error koneksi ke server bot', true);
+        showToast('Error trigger jam', true);
       }
     }
 
     async function triggerPiket() {
-      if (!confirm('Kirim woro-woro Piket hari ini ke WhatsApp sekarang?')) return;
+      const targetId = getSelectedGroupId();
+      const targetName = document.getElementById('btnTargetGroupLabel')?.innerText || targetId;
+
+      if (!confirm(`Kirim rekap Guru Piket hari ini ke grup "${targetName}" sekarang?`)) return;
+
       try {
-        showToast('Sedang mengirim briefing piket...');
+        showToast(`Sedang mengirim briefing piket...`);
         const res = await fetch('/api/trigger', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'piket' })
+          body: JSON.stringify({ type: 'piket', targetGroupId: targetId })
         });
         const data = await res.json();
         if (data.success) {
-          showToast('Woro-woro Piket berhasil terkirim! 🚀');
+          showToast(`Rekap Guru Piket terkirim ke "${targetName}"! 🚀`);
         } else {
           showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
         }
-        refreshStatus();
+        loadStatus();
       } catch (e) {
         showToast('Error trigger piket', true);
       }
-    }
-
-    async function triggerJamCurrent() {
-      try {
-        showToast('Sedang mengirim woro-woro jam aktif saat ini...');
-        const res = await fetch('/api/trigger', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'jam', jam: 'current' })
-        });
-        const data = await res.json();
-        if (data.success) {
-          showToast('Jadwal jam berhasil terkirim! 🚀');
-        } else {
-          showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
-        }
-        refreshStatus();
-      } catch (e) {
-        showToast('Error trigger jam', true);
-      }
-    }
-
-    async function triggerJamSpecific() {
-      const jam = document.getElementById('selectJam').value;
-      if (!confirm(`Kirim woro-woro jam ke-${jam} ke WhatsApp sekarang?`)) return;
-      try {
-        showToast(`Sedang mengirim jadwal Jam ${jam}...`);
-        const res = await fetch('/api/trigger', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'jam', jam: parseInt(jam) })
-        });
-        const data = await res.json();
-        if (data.success) {
-          showToast(`Jadwal Jam ${jam} berhasil terkirim! 🚀`);
-        } else {
-          showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
-        }
-        refreshStatus();
-      } catch (e) {
-        showToast('Error trigger jam', true);
-      }
-    }
-
-    function refreshStatus() {
-      loadStatus();
     }
 
     function escapeHtml(str) {
@@ -821,10 +1193,13 @@
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    // Auto-refresh status & QR every 5s
+    // INITIALIZATION
+    loadTodayJadwal();
     loadStatus();
+    loadGroups();
     loadContacts();
-    setInterval(loadStatus, 5000);
+    setInterval(updateUI, 2000);
+    setInterval(loadStatus, 6000);
   </script>
 </body>
 </html>
