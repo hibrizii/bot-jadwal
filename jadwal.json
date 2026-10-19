@@ -1,0 +1,2346 @@
+{
+  "periodTimes": {
+    "1": {
+      "start": "07.15",
+      "end": "08.00",
+      "label": "07.15 - 08.00"
+    },
+    "2": {
+      "start": "08.00",
+      "end": "08.45",
+      "label": "08.00 - 08.45"
+    },
+    "3": {
+      "start": "09.15",
+      "end": "10.00",
+      "label": "09.15 - 10.00"
+    },
+    "4": {
+      "start": "10.00",
+      "end": "10.45",
+      "label": "10.00 - 10.45"
+    },
+    "5": {
+      "start": "10.45",
+      "end": "11.30",
+      "label": "10.45 - 11.30"
+    },
+    "6": {
+      "start": "12.45",
+      "end": "13.30",
+      "label": "12.45 - 13.30"
+    },
+    "7": {
+      "start": "13.30",
+      "end": "14.15",
+      "label": "13.30 - 14.15"
+    },
+    "8": {
+      "start": "14.15",
+      "end": "15.00",
+      "label": "14.15 - 15.00"
+    }
+  },
+  "schedule": {
+    "Monday": {
+      "periods": {
+        "1": [
+          {
+            "class": "10 J",
+            "subject": "Ceremony/Forum Walas",
+            "teachers": [
+              "Ceremony"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Ceremony/Forum Walas",
+            "teachers": [
+              "Ceremony"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Ceremony/Forum Walas",
+            "teachers": [
+              "Ceremony"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Ceremony/Forum Walas",
+            "teachers": [
+              "Ceremony"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Ceremony/Forum Walas",
+            "teachers": [
+              "Ceremony"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Ceremony/Forum Walas",
+            "teachers": [
+              "Ceremony"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Ceremony/Forum Walas",
+            "teachers": [
+              "Ceremony"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Arabic",
+            "teachers": [
+              "Ust. Nasrul"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Arabic",
+            "teachers": [
+              "Ust. Munawwir"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Akhlak",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math Science",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Arabic",
+            "teachers": [
+              "Ust. Nasrul"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Akhlak",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Arabic",
+            "teachers": [
+              "Ust. Munawwir"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "class": "12 STEAM",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Aqidah",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Chemistry",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Math",
+            "teachers": []
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          }
+        ],
+        "7": [
+          {
+            "class": "12 STEAM",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Aqidah",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Chemistry",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          }
+        ],
+        "8": [
+          {
+            "class": "11 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Sirah",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Sirah",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Math",
+            "teachers": []
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Math",
+            "teachers": []
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Math",
+            "teachers": []
+          }
+        ]
+      },
+      "piket": {
+        "1": {
+          "lt1": "Ust. Sirril",
+          "lt4": "Ust. Hibrizi"
+        },
+        "2": {
+          "lt1": "Ust. Randy",
+          "lt4": "Ust. Hamzah"
+        },
+        "3": {
+          "lt1": "Ust. Nashru",
+          "lt4": "Ust. Randy"
+        },
+        "4": {
+          "lt1": "Ust. Akbar",
+          "lt4": "Ust. Septian"
+        }
+      }
+    },
+    "Tuesday": {
+      "periods": {
+        "1": [
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Economy/Geography/Civic",
+            "teachers": [
+              "Ust. Nashru",
+              "Ust. Randy",
+              "Ust. Ryan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Biology",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Chemistry/Math Science",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Economy/Geography/Civic",
+            "teachers": [
+              "Ust. Nashru",
+              "Ust. Randy",
+              "Ust. Ryan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Biology",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Chemistry/Math Science",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Fiqih",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Hadits",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "History/Civic",
+            "teachers": [
+              "Ust. Arya",
+              "Ust. Ryan"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "7": [
+          {
+            "class": "11 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Geography",
+            "teachers": [
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Hadits",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          }
+        ],
+        "8": [
+          {
+            "class": "11 STEAM",
+            "subject": "Fiqih",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Geography",
+            "teachers": [
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Aqidah",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          }
+        ]
+      },
+      "piket": {
+        "1": {
+          "lt1": "Ust. Arya",
+          "lt4": "Ust. Robby"
+        },
+        "2": {
+          "lt1": "Ust. Rozaq",
+          "lt4": "Ust. Randy"
+        },
+        "3": {
+          "lt1": "Ust. Hibrizi",
+          "lt4": "Ust. Rozaq"
+        },
+        "4": {
+          "lt1": "Ust. Septian",
+          "lt4": "Ust. Nashru"
+        }
+      }
+    },
+    "Wednesday": {
+      "periods": {
+        "1": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "class": "11 STEAM",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Hadits",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "History",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "class": "11 STEAM",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "History",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Aqidah",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Nuril"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Aqidah",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Chemistry/Geography",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Fiqih",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Math",
+            "teachers": []
+          }
+        ],
+        "6": [
+          {
+            "class": "12 STEAM",
+            "subject": "Aqidah",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Fiqih",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Chemistry/Geography",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "History/Civic",
+            "teachers": [
+              "Ust. Ryan",
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "7": [
+          {
+            "class": "11 STEAM",
+            "subject": "History/Civic",
+            "teachers": [
+              "Ust. Arya",
+              "Ust. Ryan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Akhlak",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Physics",
+            "teachers": [
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Geography",
+            "teachers": [
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "8": [
+          {
+            "class": "12 IGPA",
+            "subject": "Aqidah",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Physics",
+            "teachers": [
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Geography",
+            "teachers": [
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math",
+            "teachers": []
+          }
+        ]
+      },
+      "piket": {
+        "1": {
+          "lt1": "Ust. Hamzah",
+          "lt4": "Ust. Fauzan"
+        },
+        "2": {
+          "lt1": "Ust. Robby",
+          "lt4": "Ust. Hibrizi"
+        },
+        "3": {
+          "lt1": "Ust. Hibrizi",
+          "lt4": "Ust. As'ad"
+        },
+        "4": {
+          "lt1": "Ust. Rozaq",
+          "lt4": "Ust. Akbar"
+        }
+      }
+    },
+    "Thursday": {
+      "periods": {
+        "1": [
+          {
+            "class": "11 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Fauzan",
+              "Ust. Try"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "class": "11 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Economy",
+            "teachers": [
+              "Ust. Nashru"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Fauzan",
+              "Ust. Try"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "class": "12 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Fauzan",
+              "Ust. Try"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "class": "12 STEAM",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "PJOK",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Fauzan",
+              "Ust. Try"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Try",
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Math",
+            "teachers": []
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math",
+            "teachers": []
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Math",
+            "teachers": []
+          }
+        ],
+        "6": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Akhlak",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "History/Civic",
+            "teachers": [
+              "Ust. Ryan",
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Try",
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "English",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          }
+        ],
+        "7": [
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Biology/Physics",
+            "teachers": [
+              "Ust. Akbar",
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Economy/Geography/Civic",
+            "teachers": [
+              "Ust. Nashru",
+              "Ust. Randy",
+              "Ust. Ryan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Try",
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Chemistry/Math Science",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "8": [
+          {
+            "class": "12 IGPA",
+            "subject": "Peminatan TKA",
+            "teachers": [
+              "TP"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Economy/Geography/Civic",
+            "teachers": [
+              "Ust. Nashru",
+              "Ust. Randy",
+              "Ust. Ryan"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Sirah/IT",
+            "teachers": [
+              "Ust. Try",
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Chemistry/Math Science",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math",
+            "teachers": []
+          }
+        ]
+      },
+      "piket": {
+        "1": {
+          "lt1": "Ust. As'ad",
+          "lt4": "Ust. Arya"
+        },
+        "2": {
+          "lt1": "Ust. Rozaq",
+          "lt4": "Ust. As'ad"
+        },
+        "3": {
+          "lt1": "Ust. Nashru",
+          "lt4": "Ust. Hamzah"
+        },
+        "4": {
+          "lt1": "Ust. Robby",
+          "lt4": "Ust. Rozaq"
+        }
+      }
+    },
+    "Friday": {
+      "periods": {
+        "1": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Hadits",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math Science",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "class": "10 I",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Sociology",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Math Science",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Math",
+            "teachers": []
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Chemistry/Geography",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Biology",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "class": "11 BUSSLAW",
+            "subject": "English",
+            "teachers": [
+              "Ust. Sirril"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Chemistry/Geography",
+            "teachers": [
+              "Ust. Hamzah",
+              "Ust. Randy"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Biology",
+            "teachers": [
+              "Ust. Akbar"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "class": "10 J",
+            "subject": "Jumat Preparation",
+            "teachers": [
+              "Jumat"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Jumat Preparation",
+            "teachers": [
+              "Jumat"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Jumat Preparation",
+            "teachers": [
+              "Jumat"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Jumat Preparation",
+            "teachers": [
+              "Jumat"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Jumat Preparation",
+            "teachers": [
+              "Jumat"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Jumat Preparation",
+            "teachers": [
+              "Jumat"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Jumat Preparation",
+            "teachers": [
+              "Jumat"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "class": "11 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Fiqih",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Physics",
+            "teachers": [
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "History",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "7": [
+          {
+            "class": "11 STEAM",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Hibrizi"
+            ]
+          },
+          {
+            "class": "10 I",
+            "subject": "Chemistry",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Physics",
+            "teachers": [
+              "Ust. As'ad"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "History",
+            "teachers": [
+              "Ust. Arya"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "8": [
+          {
+            "class": "10 I",
+            "subject": "Chemistry",
+            "teachers": [
+              "Ust. Hamzah"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Septian"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Try Out",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          },
+          {
+            "class": "11 STEAM",
+            "subject": "Akhlak",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "11 BUSSLAW",
+            "subject": "Akhlak",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "10 J",
+            "subject": "Math",
+            "teachers": []
+          }
+        ]
+      },
+      "piket": {
+        "1": {
+          "lt1": "Ust. Irfan",
+          "lt4": "Ust. As'ad"
+        },
+        "2": {
+          "lt1": "Ust. Fauzan",
+          "lt4": "Ust. Irfan"
+        },
+        "3": {
+          "lt1": "Ust. Hamzah",
+          "lt4": "Ust. Akbar"
+        },
+        "4": {
+          "lt1": "Ust. Akbar",
+          "lt4": "Ust. Randy"
+        }
+      }
+    },
+    "Saturday": {
+      "periods": {
+        "1": [
+          {
+            "class": "12 IGPA",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "class": "12 IGPA",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "12 STEAM",
+            "subject": "Math",
+            "teachers": [
+              "Ust. Krisna"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "class": "12 STEAM",
+            "subject": "Akhlak",
+            "teachers": [
+              "Ust. Fadholi"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Fiqih",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "class": "12 STEAM",
+            "subject": "Fiqih",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "TOEFL",
+            "teachers": [
+              "Ust. Irfan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "class": "12 STEAM",
+            "subject": "Sirah",
+            "teachers": [
+              "Ust. Fauzan"
+            ]
+          },
+          {
+            "class": "12 IGPA",
+            "subject": "Bahasa Indonesia",
+            "teachers": [
+              "Ust. Robby"
+            ]
+          },
+          {
+            "class": "12 BUSSLAW",
+            "subject": "Math",
+            "teachers": []
+          }
+        ],
+        "6": [],
+        "7": [],
+        "8": []
+      },
+      "piket": {
+        "1": {
+          "lt1": "-",
+          "lt4": "-"
+        },
+        "2": {
+          "lt1": "-",
+          "lt4": "-"
+        },
+        "3": {
+          "lt1": "-",
+          "lt4": "-"
+        },
+        "4": {
+          "lt1": "-",
+          "lt4": "-"
+        }
+      }
+    }
+  }
+}

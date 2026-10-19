@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMA Al-Maahira Bot Gateway & Tagging Controller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-hover: #047857;
+      --primary-light: #ecfdf5;
+      --primary-border: #a7f3d0;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 1.25rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .header-icon {
+      font-size: 2.25rem;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 0.75rem;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .header-title h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .header-title p {
+      font-size: 0.85rem;
+      color: #a7f3d0;
+      font-weight: 500;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .badge-connected {
+      background: #064e3b;
+      color: #6ee7b7;
+      border: 1px solid #059669;
+    }
+    .badge-waiting {
+      background: #78350f;
+      color: #fde68a;
+      border: 1px solid #d97706;
+      animation: pulse 2s infinite;
+    }
+    .badge-disconnected {
+      background: #7f1d1d;
+      color: #fca5a5;
+      border: 1px solid #dc2626;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* GRID LAYOUT */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 900px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .grid-3 {
+        grid-template-columns: 1.2fr 1fr;
+      }
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--surface-border);
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #f1f5f9;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: #fff;
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-primary { background: var(--primary); }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-accent { background: var(--accent); }
+    .btn-accent:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover:not(:disabled) {
+      border-color: #64748b;
+      color: #fff;
+    }
+
+    /* SWITCH TOGGLES */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-info h4 { font-size: 0.9rem; font-weight: 600; }
+    .toggle-info p { font-size: 0.78rem; color: var(--text-muted); }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #475569;
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(22px); }
+
+    /* INPUTS */
+    .form-group {
+      margin-top: 0.75rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .input-text, .select {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--surface-border);
+      border-radius: 0.5rem;
+      padding: 0.55rem 0.75rem;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .input-text:focus, .select:focus {
+      border-color: var(--primary);
+    }
+
+    /* QR CODE BOX */
+    .qr-container {
+      text-align: center;
+      padding: 1.5rem;
+      background: #0b1120;
+      border-radius: 0.75rem;
+      border: 2px dashed #059669;
+    }
+    .qr-img {
+      max-width: 240px;
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      background: #fff;
+      padding: 0.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .qr-hint {
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: #94a3b8;
+    }
+
+    /* TEACHER CONTACTS TABLE */
+    .contact-table-wrapper {
+      max-height: 380px;
+      overflow-y: auto;
+      border: 1px solid var(--surface-border);
+      border-radius: 0.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    th {
+      background: #0f172a;
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--surface-border);
+    }
+    td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .phone-input {
+      width: 100%;
+      background: #0b1120;
+      border: 1px solid #334155;
+      border-radius: 0.4rem;
+      padding: 0.35rem 0.5rem;
+      color: #6ee7b7;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+    .phone-input:focus {
+      border-color: #10b981;
+      outline: none;
+    }
+    .tag-status-pill {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .tag-ready { background: #064e3b; color: #6ee7b7; }
+    .tag-empty { background: #334155; color: #94a3b8; }
+
+    /* LOGS BOX */
+    .log-box {
+      background: #050811;
+      border: 1px solid #1e293b;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .log-entry { margin-bottom: 0.3rem; }
+    .log-success { color: #34d399; }
+    .log-err { color: #f87171; }
+    .log-info { color: #60a5fa; }
+
+    /* TOAST ALERT */
+    #toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #065f46;
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 100;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <div class="header-icon">🕌</div>
+        <div class="header-title">
+          <h1>SMA AL-MAAHIRA PUTRA IIBS MALANG</h1>
+          <p>WhatsApp Tagging Gateway & Jadwal Controller (Baileys Engine)</p>
+        </div>
+      </div>
+      <div id="statusBadge" class="badge badge-waiting">
+        <span>⏳ Memeriksa Koneksi...</span>
+      </div>
+    </header>
+
+    <!-- SECTION QR CODE (Only visible when not connected) -->
+    <div id="qrCard" class="card" style="display: none;">
+      <div class="card-header">
+        <h2 class="card-title">📱 Scan QR Code WhatsApp (Cukup 1x Saja)</h2>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Sesi akan otomatis tersimpan</span>
+      </div>
+      <div class="qr-container">
+        <img id="qrImg" class="qr-img" src="" alt="WhatsApp QR Code">
+        <div class="qr-hint">
+          <strong>Cara Menghubungkan:</strong><br>
+          1. Buka <strong>WhatsApp</strong> di HP Anda (Nomor Bot)<br>
+          2. Klik menu titik tiga (Android) atau Pengaturan (iPhone) &gt; <strong>Perangkat Tertaut (Linked Devices)</strong><br>
+          3. Klik <strong>Tautkan Perangkat</strong> dan scan QR di atas!
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="grid grid-3">
+      <!-- LEFT COLUMN: CONTROLS & TRIGGERS -->
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- CARD AUTOMATION TOGGLES -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">⚙️ Pengaturan Jadwal Otomatis (Cron 24 Jam)</h2>
+            <button class="btn btn-primary" onclick="saveSettings()">💾 Simpan</button>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Briefing Guru Piket Pagi</h4>
+              <p>Otomatis kirim setiap 06.30 WIB (Sesi I - IV, Lt. 1 & 4)</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoPiketCheck">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Woro-Woro Jam Mengajar (H-10 Menit)</h4>
+              <p>Otomatis kirim 10 menit sebelum bel Jam 1 s.d. 8</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoMengajarCheck">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="targetGroupId">ID Grup WhatsApp Target Broadcast:</label>
+            <input type="text" id="targetGroupId" class="input-text" placeholder="120363421823108391@g.us">
+            <small style="color: #64748b; font-size: 0.75rem; margin-top: 0.25rem; display: block;">
+              Default: <code>120363421823108391@g.us</code> (SMA AL-MAAHIRA PUTRA)
+            </small>
+          </div>
+        </div>
+
+        <!-- CARD MANUAL ACTIONS -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">🚀 Uji Coba Pengiriman Manual (Realtime Tag)</h2>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Klik tombol di bawah untuk mengetes kirim woro-woro langsung ke grup dengan tag biru aktif:
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+            <button class="btn btn-accent" onclick="triggerPiket()">
+              📋 Kirim Piket Hari Ini
+            </button>
+            <button class="btn btn-primary" onclick="triggerJamCurrent()">
+              🔔 Kirim Jam Aktif Sekarang
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <select id="selectJam" class="select" style="max-width: 160px;">
+              <option value="1">Jam 1 (07.15)</option>
+              <option value="2">Jam 2 (08.00)</option>
+              <option value="3">Jam 3 (09.15)</option>
+              <option value="4">Jam 4 (10.00)</option>
+              <option value="5">Jam 5 (10.45)</option>
+              <option value="6">Jam 6 (12.45)</option>
+              <option value="7">Jam 7 (13.30)</option>
+              <option value="8">Jam 8 (14.15)</option>
+            </select>
+            <button class="btn btn-outline" onclick="triggerJamSpecific()">
+              Kirim Jam Pilihan
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD ACTIVITY LOGS -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">📜 Log Aktivitas Bot</h2>
+            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="refreshStatus()">🔄 Refresh</button>
+          </div>
+          <div id="logBox" class="log-box">Memuat log...</div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: TEACHER CONTACTS (TAGGING SYSTEM) -->
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">👥 Kontak Ustadz (Target Tag Biru WA)</h2>
+              <p style="font-size: 0.75rem; color: var(--text-muted);">Nomor HP digunakan untuk mention aktif (@nomor) berdering di HP guru</p>
+            </div>
+            <button class="btn btn-primary" onclick="saveContacts()">💾 Simpan Kontak</button>
+          </div>
+
+          <!-- QUICK PASTE ACCORDION -->
+          <details style="margin-bottom: 1rem; background: #0f172a; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid var(--surface-border);">
+            <summary style="cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #a7f3d0;">
+              📋 Tempel Cepat dari Spreadsheet (Klik di sini)
+            </summary>
+            <div style="margin-top: 0.5rem;">
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">
+                Copy kolom [Nama Guru] & [Nomor HP] dari Excel/Google Sheets Anda, lalu paste di kotak berikut:
+              </p>
+              <textarea id="pasteArea" class="input-text" style="height: 90px; font-family: monospace; font-size: 0.75rem;" placeholder="Ust. Arya  081234567890&#10;Ust. Robby  085678912345"></textarea>
+              <button class="btn btn-accent" style="margin-top: 0.5rem; width: 100%; font-size: 0.8rem;" onclick="parsePastedContacts()">
+                ⚡ Terapkan Nomor ke Tabel di Bawah
+              </button>
+            </div>
+          </details>
+
+          <!-- SEARCH INPUT -->
+          <input type="text" id="searchTeacher" class="input-text" placeholder="🔍 Cari nama ustadz..." oninput="filterTeachers()" style="margin-bottom: 0.75rem;">
+
+          <div class="contact-table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 40px;">No</th>
+                  <th>Nama Guru</th>
+                  <th>Nomor HP / WhatsApp</th>
+                  <th style="width: 85px;">Tag</th>
+                </tr>
+              </thead>
+              <tbody id="contactTableBody">
+                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Memuat kontak...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: var(--text-muted);">
+            <span id="contactCount">Total: 0 guru</span>
+            <span id="taggedCount" style="color: #6ee7b7; font-weight: 600;">0 siap tag</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">Notifikasi</div>
+
+  <script>
+    let teacherContacts = {};
+    let botConfig = {};
+
+    function showToast(msg, isErr = false) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.background = isErr ? '#dc2626' : '#059669';
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3500);
+    }
+
+    async function loadStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        
+        // Status Badge
+        const badge = document.getElementById('statusBadge');
+        const qrCard = document.getElementById('qrCard');
+        const qrImg = document.getElementById('qrImg');
+
+        if (data.connected) {
+          badge.className = 'badge badge-connected';
+          badge.innerHTML = `<span>🟢 WhatsApp Terhubung (${data.user || 'Aktif'})</span>`;
+          qrCard.style.display = 'none';
+        } else if (data.qr) {
+          badge.className = 'badge badge-waiting';
+          badge.innerHTML = `<span>🟡 Menunggu Scan QR</span>`;
+          qrImg.src = data.qr;
+          qrCard.style.display = 'block';
+        } else {
+          badge.className = 'badge badge-disconnected';
+          badge.innerHTML = `<span>🔴 Memulai Bot WhatsApp...</span>`;
+          qrCard.style.display = 'none';
+        }
+
+        // Config
+        botConfig = data.config || {};
+        document.getElementById('autoPiketCheck').checked = !!botConfig.autoPiket;
+        document.getElementById('autoMengajarCheck').checked = !!botConfig.autoMengajar;
+        document.getElementById('targetGroupId').value = botConfig.targetGroupId || '';
+
+        // Logs
+        const logBox = document.getElementById('logBox');
+        if (data.logs && data.logs.length > 0) {
+          logBox.innerHTML = data.logs.map(l => {
+            let cls = 'log-entry';
+            if (l.includes('[SUKSES]') || l.includes('terkirim')) cls += ' log-success';
+            else if (l.includes('[ERROR]') || l.includes('Gagal')) cls += ' log-err';
+            else cls += ' log-info';
+            return `<div class="${cls}">${escapeHtml(l)}</div>`;
+          }).join('');
+          logBox.scrollTop = logBox.scrollHeight;
+        } else {
+          logBox.innerHTML = '<div style="color: #64748b;">Belum ada riwayat pengiriman.</div>';
+        }
+
+      } catch (err) {
+        console.error("Gagal load status:", err);
+      }
+    }
+
+    async function loadContacts() {
+      try {
+        const res = await fetch('/api/kontak');
+        teacherContacts = await res.json();
+        renderContactsTable();
+      } catch (err) {
+        console.error("Gagal load kontak:", err);
+      }
+    }
+
+    function renderContactsTable() {
+      const tbody = document.getElementById('contactTableBody');
+      const search = (document.getElementById('searchTeacher').value || '').toLowerCase();
+      
+      const names = Object.keys(teacherContacts).sort();
+      let html = '';
+      let readyCount = 0;
+      let total = 0;
+
+      names.forEach((name, idx) => {
+        const phone = teacherContacts[name] || '';
+        if (phone && phone.trim().length >= 9) readyCount++;
+        total++;
+
+        if (search && !name.toLowerCase().includes(search) && !phone.includes(search)) return;
+
+        const hasPhone = phone && phone.trim().length >= 9;
+        const tagBadge = hasPhone 
+          ? '<span class="tag-status-pill tag-ready">Tag Biru</span>'
+          : '<span class="tag-status-pill tag-empty">Polos</span>';
+
+        html += `
+          <tr>
+            <td style="color: var(--text-muted); font-size: 0.75rem;">${idx + 1}</td>
+            <td style="font-weight: 600; color: #f8fafc;">${escapeHtml(name)}</td>
+            <td>
+              <input type="text" class="phone-input" data-teacher="${escapeHtml(name)}" value="${escapeHtml(phone)}" placeholder="08xxxxxxxx" onchange="onPhoneChange(this)">
+            </td>
+            <td>${tagBadge}</td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html || '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Tidak ada guru ditemukan</td></tr>';
+      document.getElementById('contactCount').innerText = `Total: ${total} ustadz`;
+      document.getElementById('taggedCount').innerText = `${readyCount} siap tag aktif`;
+    }
+
+    function onPhoneChange(el) {
+      const name = el.getAttribute('data-teacher');
+      let val = el.value.trim().replace(/[^0-9]/g, '');
+      if (val.startsWith('08')) val = '62' + val.substring(1);
+      else if (val.startsWith('8')) val = '62' + val;
+      el.value = val;
+      teacherContacts[name] = val;
+      renderContactsTable();
+    }
+
+    function filterTeachers() {
+      renderContactsTable();
+    }
+
+    function parsePastedContacts() {
+      const raw = document.getElementById('pasteArea').value;
+      if (!raw.trim()) return showToast('Tempel data terlebih dahulu!', true);
+
+      const lines = raw.split('\n');
+      let matchCount = 0;
+
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        const parts = line.split(/[\t,;]+|\s{2,}/);
+        if (parts.length >= 2) {
+          const rawName = parts[0].trim();
+          let rawPhone = parts[parts.length - 1].trim().replace(/[^0-9]/g, '');
+          if (rawPhone.startsWith('08')) rawPhone = '62' + rawPhone.substring(1);
+          else if (rawPhone.startsWith('8')) rawPhone = '62' + rawPhone;
+
+          for (const key in teacherContacts) {
+            if (key.toLowerCase().includes(rawName.toLowerCase()) || rawName.toLowerCase().includes(key.toLowerCase())) {
+              teacherContacts[key] = rawPhone;
+              matchCount++;
+              break;
+            }
+          }
+        }
+      }
+
+      renderContactsTable();
+      showToast(`Berhasil menerapkan ${matchCount} nomor ustadz! Jangan lupa klik Simpan.`);
+    }
+
+    async function saveContacts() {
+      try {
+        const res = await fetch('/api/kontak', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(teacherContacts)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Kontak guru berhasil disimpan! ✔️');
+        } else {
+          showToast('Gagal menyimpan kontak', true);
+        }
+      } catch (e) {
+        showToast('Error koneksi ke server bot', true);
+      }
+    }
+
+    async function saveSettings() {
+      try {
+        const newCfg = {
+          autoPiket: document.getElementById('autoPiketCheck').checked,
+          autoMengajar: document.getElementById('autoMengajarCheck').checked,
+          targetGroupId: document.getElementById('targetGroupId').value.trim()
+        };
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newCfg)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Pengaturan bot berhasil disimpan! ✔️');
+        } else {
+          showToast('Gagal menyimpan pengaturan', true);
+        }
+      } catch (e) {
+        showToast('Error koneksi ke server bot', true);
+      }
+    }
+
+    async function triggerPiket() {
+      if (!confirm('Kirim woro-woro Piket hari ini ke WhatsApp sekarang?')) return;
+      try {
+        showToast('Sedang mengirim briefing piket...');
+        const res = await fetch('/api/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'piket' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Woro-woro Piket berhasil terkirim! 🚀');
+        } else {
+          showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
+        }
+        refreshStatus();
+      } catch (e) {
+        showToast('Error trigger piket', true);
+      }
+    }
+
+    async function triggerJamCurrent() {
+      try {
+        showToast('Sedang mengirim woro-woro jam aktif saat ini...');
+        const res = await fetch('/api/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'jam', jam: 'current' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Jadwal jam berhasil terkirim! 🚀');
+        } else {
+          showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
+        }
+        refreshStatus();
+      } catch (e) {
+        showToast('Error trigger jam', true);
+      }
+    }
+
+    async function triggerJamSpecific() {
+      const jam = document.getElementById('selectJam').value;
+      if (!confirm(`Kirim woro-woro jam ke-${jam} ke WhatsApp sekarang?`)) return;
+      try {
+        showToast(`Sedang mengirim jadwal Jam ${jam}...`);
+        const res = await fetch('/api/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'jam', jam: parseInt(jam) })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Jadwal Jam ${jam} berhasil terkirim! 🚀`);
+        } else {
+          showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
+        }
+        refreshStatus();
+      } catch (e) {
+        showToast('Error trigger jam', true);
+      }
+    }
+
+    function refreshStatus() {
+      loadStatus();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Auto-refresh status & QR every 5s
+    loadStatus();
+    loadContacts();
+    setInterval(loadStatus, 5000);
+  </script>
+</body>
+</html>
