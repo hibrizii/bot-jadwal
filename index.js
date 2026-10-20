@@ -218,9 +218,9 @@ function buildJamMessage(targetJam, jadwalData, kontakMap, forceAll = false) {
     const curr = classMap[kls];
     const prev = prevMap[kls];
 
-    // Jam 1: Selalu full semua kelas (awal masuk)
-    // Jam 2-8: Hanya kelas yang berganti mapel atau ustadz pengajar
-    const isChanging = (targetJam === 1) || forceAll || !prev ||
+    // Jam 1 (awal masuk pagi) & Jam 6 (setelah istirahat Dhuhur): Selalu full semua kelas
+    // Jam lainnya: Hanya kelas yang berganti mata pelajaran atau ustadz pengajar
+    const isChanging = (targetJam === 1 || targetJam === 6) || forceAll || !prev ||
       (prev.subject !== curr.subject) ||
       ((prev.teachers || []).join('/') !== (curr.teachers || []).join('/'));
 
@@ -237,8 +237,8 @@ function buildJamMessage(targetJam, jadwalData, kontakMap, forceAll = false) {
       text: `[Announcement]\n` +
             `${dateStrEng}\n` +
             `Bismillah.\n` +
-            `Pemberitahuan Jam Ke-${targetJam} (${pInfo} WIB):\n` +
-            `Seluruh kelas melanjutkan mata pelajaran dari jam sebelumnya. Tidak ada pergantian guru pengajar.`,
+            `Notice for ${ordJam} period at ${pInfo} WIB:\n` +
+            `All classes continue their lessons from the previous period.`,
       mentions: [],
       hasChanges: false,
       changingCount: 0,
@@ -259,10 +259,10 @@ function buildJamMessage(targetJam, jadwalData, kontakMap, forceAll = false) {
     text += `${icon} ${item.class} : ${item.subject} - ${gStr}\n\n`;
   }
 
-  // Jika ada sebagian kelas yang lanjut, beri catatan rapi di bawah
-  if (targetJam > 1 && continuingClasses.length > 0) {
+  // Jika ada sebagian kelas yang lanjut (bukan Jam 1 atau Jam 6 setelah Dhuhur), beri catatan bahasa Inggris
+  if (targetJam > 1 && targetJam !== 6 && continuingClasses.length > 0) {
     const contNames = continuingClasses.map(c => c.class).join(', ');
-    text += `*(Kelas ${contNames} melanjutkan pelajaran dari jam sebelumnya)*\n`;
+    text += `*(The other classes: ${contNames} continue their lessons from the previous period)*\n`;
   }
 
   text = text.trim();
@@ -524,7 +524,7 @@ app.get('/api/jadwal/today', (req, res) => {
       for (const item of list) {
         const guruStr = (item.teachers || []).join(' / ');
         const prev = prevMap[item.class];
-        const isChanging = (jam === 1) || !prev ||
+        const isChanging = (jam === 1 || jam === 6) || !prev ||
           (prev.subject !== item.subject) ||
           ((prev.teachers || []).join('/') !== guruStr);
 

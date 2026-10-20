@@ -887,14 +887,17 @@
       }
 
       var currentJamClasses = globalData.filter(d => d.jam === displayJam && !d.kelas.toLowerCase().includes('piket'));
-      var changingClassesCount = (displayJam === 1) ? currentJamClasses.length : currentJamClasses.filter(c => c.isChanging).length;
+      var isFullPeriod = (displayJam === 1 || displayJam === 6);
+      var changingClassesCount = isFullPeriod ? currentJamClasses.length : currentJamClasses.filter(c => c.isChanging).length;
 
       const dayTitle = isViewingToday ? currentDayIndo.toUpperCase() : `${currentDayIndo.toUpperCase()} (TINJAU)`;
       document.getElementById('jam-section-title').innerText = `📅 JADWAL KELAS (${dayTitle} | JAM KE-${displayJam} | ${pInfo} WIB)`;
       
       let btnText = `Kirim Woro-Woro Jam ${displayJam} (${changingClassesCount} Kelas Ganti Mapel)`;
       if (displayJam === 1) {
-        btnText = `Kirim Woro-Woro Jam 1 (Full Semua Kelas)`;
+        btnText = `Kirim Woro-Woro Jam 1 (Full Semua Kelas - Awal Masuk)`;
+      } else if (displayJam === 6) {
+        btnText = `Kirim Woro-Woro Jam 6 (Full Semua Kelas - Setelah Dhuhur)`;
       } else if (changingClassesCount === 0) {
         btnText = `Kirim Woro-Woro Jam ${displayJam} (Semua Kelas Lanjut)`;
       }
@@ -988,7 +991,9 @@
             var mapelEl = card.querySelector('.mapel-target');
             if (mapelEl && !isPik) {
               var badgeHtml = "";
-              if (displayJam > 1) {
+              if (displayJam === 6) {
+                badgeHtml = ` <span style="font-size:0.68rem; background:#dcfce7; color:#166534; padding:1px 6px; border-radius:4px; font-weight:700; margin-left:4px;">Setelah Dhuhur</span>`;
+              } else if (displayJam > 1) {
                 if (item.isChanging) {
                   badgeHtml = ` <span style="font-size:0.68rem; background:#dbeafe; color:#1e40af; padding:1px 6px; border-radius:4px; font-weight:700; margin-left:4px;">Ganti</span>`;
                 } else {
@@ -1272,10 +1277,15 @@
       const targetName = document.getElementById('btnTargetGroupLabel')?.innerText || targetId;
 
       var currentJamClasses = globalData.filter(d => d.jam === currentDisplay && !d.kelas.toLowerCase().includes('piket'));
-      var changingClassesCount = (currentDisplay === 1) ? currentJamClasses.length : currentJamClasses.filter(c => c.isChanging).length;
+      var isFullPeriod = (currentDisplay === 1 || currentDisplay === 6);
+      var changingClassesCount = isFullPeriod ? currentJamClasses.length : currentJamClasses.filter(c => c.isChanging).length;
 
       let confirmMsg = `Kirim Woro-Woro Pelajaran Jam ${currentDisplay} (${changingClassesCount} kelas berganti mapel) ke grup "${targetName}" sekarang?`;
-      if (currentDisplay > 1 && changingClassesCount === 0) {
+      if (currentDisplay === 1) {
+        confirmMsg = `Kirim Woro-Woro Jam 1 (Full Semua Kelas - Awal Masuk) ke grup "${targetName}" sekarang?`;
+      } else if (currentDisplay === 6) {
+        confirmMsg = `Kirim Woro-Woro Jam 6 (Full Semua Kelas - Setelah Dhuhur) ke grup "${targetName}" sekarang?`;
+      } else if (changingClassesCount === 0) {
         confirmMsg = `Di Jam ${currentDisplay}, seluruh kelas melanjutkan mata pelajaran dari jam sebelumnya (tidak ada pergantian). Tetap kirim pemberitahuan ke grup "${targetName}"?`;
       }
 
