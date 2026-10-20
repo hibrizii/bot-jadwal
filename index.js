@@ -181,23 +181,19 @@ function buildPiketMessage(jadwalData, kontakMap) {
   return { text, mentions };
 }
 
-// 2. Format Pesan Jam Pelajaran
-function buildJamMessage(targetJam, jadwalData, kontakMap) {
+// 2. Format Pesan Jam Pelajaran (Pergantian Mata Pelajaran)
+function buildJamMessage(targetJam, jadwalData, kontakMap, forceAll = false) {
   const { name: dayName, dateStrEng } = getJakartaDay();
   const daySched = jadwalData.schedule[dayName];
   if (!daySched || !daySched.periods) return null;
 
   const periodsList = daySched.periods[String(targetJam)] || [];
-  const mentions = [];
+  if (periodsList.length === 0) return null;
 
+  const mentions = [];
   const s = ["th", "st", "nd", "rd"]; const vJ = targetJam % 100;
   const ordJam = targetJam + (s[(vJ - 20) % 10] || s[vJ] || s[0]);
   const pInfo = jadwalData.periodTimes[String(targetJam)] ? jadwalData.periodTimes[String(targetJam)].label : "";
-
-  let text = `[Announcement]\n` +
-             `${dateStrEng}\n` +
-             `Bismillah.\n` +
-             `For Ustadz having a schedule at ${ordJam} period at ${pInfo} WIB, please prepare yourself to come to your class\n\n`;
 
   const icons = ['🩺', '💵', '🔭', '🧬', '📚', '🎯', '🚀'];
   const kelasOrder = ["10 I", "10 J", "11 STEAM", "11 BUSSLAW", "12 STEAM", "12 BUSSLAW", "12 IGPA"];
@@ -207,16 +203,76 @@ function buildJamMessage(targetJam, jadwalData, kontakMap) {
     classMap[item.class] = item;
   }
 
-  for (let k = 0; k < kelasOrder.length; k++) {
-    const kls = kelasOrder[k];
-    if (classMap[kls]) {
-      const gStr = formatGuruMention(classMap[kls].teachers, kontakMap, mentions);
-      text += `${icons[k % icons.length]} ${kls} : ${classMap[kls].subject} - ${gStr}\n\n`;
+  // Cek jam sebelumnya untuk mendeteksi pergantian mata pelajaran
+  const prevPeriodsList = (targetJam > 1) ? (daySched.periods[String(targetJam - 1)] || []) : [];
+  const prevMap = {};
+  for (const p of prevPeriodsList) {
+    prevMap[p.class] = p;
+  }
+
+  const changingClasses = [];
+  const continuingClasses = [];
+
+  for (const kls of kelasOrder) {
+    if (!classMap[kls]) continue;
+    const curr = classMap[kls];
+    const prev = prevMap[kls];
+
+    // Jam 1: Selalu full semua kelas (awal masuk)
+    // Jam 2-8: Hanya kelas yang berganti mapel atau ustadz pengajar
+    const isChanging = (targetJam === 1) || forceAll || !prev ||
+      (prev.subject !== curr.subject) ||
+      ((prev.teachers || []).join('/') !== (curr.teachers || []).join('/'));
+
+    if (isChanging) {
+      changingClasses.push(curr);
+    } else {
+      continuingClasses.push(curr);
     }
   }
 
+  // Jika tidak ada kelas yang berganti sama sekali (semua kelas masih lanjut)
+  if (changingClasses.length === 0) {
+    return {
+      text: `[Announcement]\n` +
+            `${dateStrEng}\n` +
+            `Bismillah.\n` +
+            `Pemberitahuan Jam Ke-${targetJam} (${pInfo} WIB):\n` +
+            `Seluruh kelas melanjutkan mata pelajaran dari jam sebelumnya. Tidak ada pergantian guru pengajar.`,
+      mentions: [],
+      hasChanges: false,
+      changingCount: 0,
+      continuingCount: continuingClasses.length
+    };
+  }
+
+  let text = `[Announcement]\n` +
+             `${dateStrEng}\n` +
+             `Bismillah.\n` +
+             `For Ustadz having a schedule at ${ordJam} period at ${pInfo} WIB, please prepare yourself to come to your class\n\n`;
+
+  for (let k = 0; k < changingClasses.length; k++) {
+    const item = changingClasses[k];
+    const klsIndex = kelasOrder.indexOf(item.class);
+    const icon = icons[(klsIndex !== -1 ? klsIndex : k) % icons.length];
+    const gStr = formatGuruMention(item.teachers, kontakMap, mentions);
+    text += `${icon} ${item.class} : ${item.subject} - ${gStr}\n\n`;
+  }
+
+  // Jika ada sebagian kelas yang lanjut, beri catatan rapi di bawah
+  if (targetJam > 1 && continuingClasses.length > 0) {
+    const contNames = continuingClasses.map(c => c.class).join(', ');
+    text += `*(Kelas ${contNames} melanjutkan pelajaran dari jam sebelumnya)*\n`;
+  }
+
   text = text.trim();
-  return { text, mentions };
+  return {
+    text,
+    mentions,
+    hasChanges: true,
+    changingCount: changingClasses.length,
+    continuingCount: continuingClasses.length
+  };
 }
 
 // Helper pengirim pesan dengan mention
@@ -388,11 +444,16 @@ for (const b of bellCronList) {
     const currentCfg = readJSON('config.json');
     if (!currentCfg || !currentCfg.autoMengajar || !currentCfg.targetGroupId) return;
 
-    addLog(`[CRON] Mengirim Pengingat Jam ${b.jam} Otomatis...`);
     const jadwal = readJSON('jadwal.json');
     const kontak = readJSON('kontak.json') || {};
     const payload = buildJamMessage(b.jam, jadwal, kontak);
-    if (payload) await broadcast(currentCfg.targetGroupId, payload);
+
+    if (payload && payload.hasChanges) {
+      addLog(`[CRON] Mengirim Pengingat Jam ${b.jam} (${payload.changingCount} kelas berganti mapel)...`);
+      await broadcast(currentCfg.targetGroupId, payload);
+    } else {
+      addLog(`[CRON] Jam ${b.jam}: Tidak ada pergantian mapel (semua kelas lanjut). Siaran otomatis dilewati.`);
+    }
   }, { timezone: "Asia/Jakarta" });
 }
 
@@ -456,13 +517,23 @@ app.get('/api/jadwal/today', (req, res) => {
     // 1. Pelajaran Kelas
     for (const [jamStr, list] of Object.entries(daySched.periods || {})) {
       const jam = parseInt(jamStr);
+      const prevList = jam > 1 ? (daySched.periods[String(jam - 1)] || []) : [];
+      const prevMap = {};
+      for (const p of prevList) prevMap[p.class] = p;
+
       for (const item of list) {
         const guruStr = (item.teachers || []).join(' / ');
+        const prev = prevMap[item.class];
+        const isChanging = (jam === 1) || !prev ||
+          (prev.subject !== item.subject) ||
+          ((prev.teachers || []).join('/') !== guruStr);
+
         flatData.push({
           jam,
           kelas: item.class,
           mapel: item.subject,
-          guru: guruStr
+          guru: guruStr,
+          isChanging
         });
         (item.teachers || []).forEach(t => {
           if (t && t !== "Kosong") teachersSet.add(t.trim());
@@ -604,10 +675,16 @@ app.post('/api/trigger', async (req, res) => {
       else if (m < 855) targetJ = 7;
       else targetJ = 8;
     }
-    const payload = buildJamMessage(targetJ, jadwal, kontak);
+    const forceAll = !!req.body.forceAll;
+    const payload = buildJamMessage(targetJ, jadwal, kontak, forceAll);
     if (!payload) return res.status(400).json({ success: false, error: `Jadwal jam ${targetJ} tidak ditemukan.` });
     const result = await broadcast(targetGroup, payload);
-    return res.json(result);
+    return res.json({
+      ...result,
+      hasChanges: payload.hasChanges,
+      changingCount: payload.changingCount,
+      continuingCount: payload.continuingCount
+    });
   }
 
   res.status(400).json({ success: false, error: "Tipe trigger tidak dikenal." });

@@ -886,9 +886,19 @@
         document.getElementById('period-badge').style.color = "#16a34a";
       }
 
+      var currentJamClasses = globalData.filter(d => d.jam === displayJam && !d.kelas.toLowerCase().includes('piket'));
+      var changingClassesCount = (displayJam === 1) ? currentJamClasses.length : currentJamClasses.filter(c => c.isChanging).length;
+
       const dayTitle = isViewingToday ? currentDayIndo.toUpperCase() : `${currentDayIndo.toUpperCase()} (TINJAU)`;
       document.getElementById('jam-section-title').innerText = `📅 JADWAL KELAS (${dayTitle} | JAM KE-${displayJam} | ${pInfo} WIB)`;
-      document.getElementById('btn-jam-text').innerText = `Kirim Woro-Woro Pelajaran (${currentDayIndo} - Jam ${displayJam}) Sekarang`;
+      
+      let btnText = `Kirim Woro-Woro Jam ${displayJam} (${changingClassesCount} Kelas Ganti Mapel)`;
+      if (displayJam === 1) {
+        btnText = `Kirim Woro-Woro Jam 1 (Full Semua Kelas)`;
+      } else if (changingClassesCount === 0) {
+        btnText = `Kirim Woro-Woro Jam ${displayJam} (Semua Kelas Lanjut)`;
+      }
+      document.getElementById('btn-jam-text').innerText = btnText;
 
       var btnNow = document.getElementById('btn-now');
       btnNow.style.display = (!isViewingToday || (manualJam > 0 && manualJam !== realJam)) ? 'inline-flex' : 'none';
@@ -977,7 +987,15 @@
 
             var mapelEl = card.querySelector('.mapel-target');
             if (mapelEl && !isPik) {
-              mapelEl.innerText = item.mapel;
+              var badgeHtml = "";
+              if (displayJam > 1) {
+                if (item.isChanging) {
+                  badgeHtml = ` <span style="font-size:0.68rem; background:#dbeafe; color:#1e40af; padding:1px 6px; border-radius:4px; font-weight:700; margin-left:4px;">Ganti</span>`;
+                } else {
+                  badgeHtml = ` <span style="font-size:0.68rem; background:#f1f5f9; color:#64748b; padding:1px 6px; border-radius:4px; font-weight:600; margin-left:4px;">Lanjut</span>`;
+                }
+              }
+              mapelEl.innerHTML = escapeHtml(item.mapel) + badgeHtml;
               mapelEl.style.display = 'inline-block';
             }
 
@@ -1253,7 +1271,15 @@
       const targetId = getSelectedGroupId();
       const targetName = document.getElementById('btnTargetGroupLabel')?.innerText || targetId;
 
-      if (!confirm(`Kirim Woro-Woro Pelajaran Jam ${currentDisplay} ke grup "${targetName}" sekarang?`)) return;
+      var currentJamClasses = globalData.filter(d => d.jam === currentDisplay && !d.kelas.toLowerCase().includes('piket'));
+      var changingClassesCount = (currentDisplay === 1) ? currentJamClasses.length : currentJamClasses.filter(c => c.isChanging).length;
+
+      let confirmMsg = `Kirim Woro-Woro Pelajaran Jam ${currentDisplay} (${changingClassesCount} kelas berganti mapel) ke grup "${targetName}" sekarang?`;
+      if (currentDisplay > 1 && changingClassesCount === 0) {
+        confirmMsg = `Di Jam ${currentDisplay}, seluruh kelas melanjutkan mata pelajaran dari jam sebelumnya (tidak ada pergantian). Tetap kirim pemberitahuan ke grup "${targetName}"?`;
+      }
+
+      if (!confirm(confirmMsg)) return;
 
       try {
         showToast(`Sedang mengirim woro-woro Jam ${currentDisplay}...`);
@@ -1264,7 +1290,11 @@
         });
         const data = await res.json();
         if (data.success) {
-          showToast(`Woro-woro Jam ${currentDisplay} terkirim ke "${targetName}"! 🚀`);
+          if (data.hasChanges === false) {
+            showToast(`Pemberitahuan Jam ${currentDisplay} (semua kelas lanjut) terkirim ke "${targetName}"! ✔️`);
+          } else {
+            showToast(`Woro-woro Jam ${currentDisplay} (${data.changingCount || changingClassesCount} kelas ganti) terkirim! 🚀`);
+          }
         } else {
           showToast('Gagal: ' + (data.error || 'Cek koneksi WA'), true);
         }
